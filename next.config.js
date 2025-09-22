@@ -9,6 +9,10 @@ const nextConfig = {
       "logos-world.net",
     ],
   },
+  experimental: {
+    // Explicitly disable PPR to avoid compatibility issues
+    ppr: false,
+  },
 };
 
 module.exports = nextConfig;
