@@ -1,9 +1,36 @@
+import { Suspense } from "react";
 import FinAlAnalytics from "@/components/FinAlAnalytics";
 
 export const dynamic = "force-dynamic";
 
-// Sample data for the FinAl Analytics dashboard
-const sampleChannels = [
+// Loading component for Suspense
+function DashboardLoading() {
+  return (
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 bg-orange-500 rounded-lg flex items-center justify-center mb-4 mx-auto animate-pulse">
+          <span className="text-white font-bold text-xl">⚡</span>
+        </div>
+        <h2 className="text-xl font-bold text-white mb-2">FinAl Analytics</h2>
+        <p className="text-gray-400">Veriler yükleniyor...</p>
+        <div className="mt-4 flex justify-center space-x-2">
+          <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"></div>
+          <div
+            className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+            style={{ animationDelay: "0.1s" }}
+          ></div>
+          <div
+            className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+            style={{ animationDelay: "0.2s" }}
+          ></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Fallback data in case API calls fail
+const fallbackChannels = [
   {
     name: "Çiğdem Çiçek",
     avatarColor: "blue",
@@ -30,7 +57,7 @@ const sampleChannels = [
   },
 ];
 
-const sampleVideos = [
+const fallbackVideos = [
   {
     title: 'Zaman Damgalı Özet (Türkçe) - "Altın Rekoruna 25 Dolar"',
     channel: "Çiğdem Çiçek",
@@ -50,26 +77,6 @@ const sampleVideos = [
       {
         time: "02:29",
         text: "15 Eylül'e kadar Yüksek Mahkeme süreci; olası kayıp senaryoları",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "04:12",
-        text: "Gümüş yatırımı için öneriler ve risk değerlendirmesi",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "06:45",
-        text: "Dolar/TL paritesi ve etkileri",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "08:30",
-        text: "Portföy çeşitlendirme stratejileri",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "10:15",
-        text: "Sonuç ve öneriler",
         videoUrl: "https://youtube.com/watch?v=sample1",
       },
     ],
@@ -95,32 +102,91 @@ const sampleVideos = [
         text: "Emlak vergisi hesaplama yöntemleri ve güncellemeler",
         videoUrl: "https://youtube.com/watch?v=sample2",
       },
-      {
-        time: "04:20",
-        text: "Şehir bazında emlak fiyat analizleri",
-        videoUrl: "https://youtube.com/watch?v=sample2",
-      },
-      {
-        time: "06:10",
-        text: "Yatırım için en uygun bölgeler ve gelecek projeksiyonları",
-        videoUrl: "https://youtube.com/watch?v=sample2",
-      },
-      {
-        time: "08:05",
-        text: "Sonuç ve öneriler",
-        videoUrl: "https://youtube.com/watch?v=sample2",
-      },
     ],
   },
 ];
 
-// This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
-// It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
-// See https://shipfa.st/docs/tutorials/private-page
-export default async function Dashboard() {
+// Function to fetch channels data
+async function fetchChannels() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const response = await fetch(`${baseUrl}/api/channels`, {
+      cache: "no-store", // Ensure fresh data
+    });
+
+    if (!response.ok) {
+      throw new Error(`Channels API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.message || "Failed to fetch channels");
+    }
+
+    return data.data || [];
+  } catch (error) {
+    console.error("Error fetching channels:", error);
+    return fallbackChannels;
+  }
+}
+
+// Function to fetch bulletins data
+async function fetchBulletins() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const response = await fetch(`${baseUrl}/api/bulletins/all`, {
+      cache: "no-store", // Ensure fresh data
+    });
+
+    if (!response.ok) {
+      throw new Error(`Bulletins API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.message || "Failed to fetch bulletins");
+    }
+
+    // Transform bulletins to match FinAlAnalytics expected format
+    return (
+      data.data.map((bulletin) => ({
+        title: bulletin.title,
+        channel: bulletin.channelId,
+        videoUrl: bulletin.videoUrl,
+        publishDate: bulletin.publishDate,
+        timestamps: bulletin.timestamps || [],
+      })) || []
+    );
+  } catch (error) {
+    console.error("Error fetching bulletins:", error);
+    return fallbackVideos;
+  }
+}
+
+// Dashboard content component that fetches data
+async function DashboardContent() {
+  // Fetch data in parallel
+  const [channels, videos] = await Promise.all([
+    fetchChannels(),
+    fetchBulletins(),
+  ]);
+
   return (
     <main className="min-h-screen">
-      <FinAlAnalytics channels={sampleChannels} videos={sampleVideos} />
+      <FinAlAnalytics channels={channels} videos={videos} />
     </main>
+  );
+}
+
+// This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
+// It's a server component which means you can fetch data (like the user profile) before the page is rendered.
+// See https://shipfa.st/docs/tutorials/private-page
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<DashboardLoading />}>
+      <DashboardContent />
+    </Suspense>
   );
 }
