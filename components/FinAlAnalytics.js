@@ -6,13 +6,19 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
   const [activeTab, setActiveTab] = useState("video-summaries");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedExpert, setSelectedExpert] = useState("all");
+  const [selectedChannelId, setSelectedChannelId] = useState("all");
 
-  // Filter videos based on search term
-  const filteredVideos = videos.filter(
-    (video) =>
+  // Filter videos based on search term and selected channel
+  const filteredVideos = videos.filter((video) => {
+    const matchesSearch =
       video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      video.channel.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      video.channel.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesChannel =
+      selectedChannelId === "all" || video.channel === selectedChannelId;
+
+    return matchesSearch && matchesChannel;
+  });
 
   // Filter channels based on search term
   const filteredChannels = channels.filter((channel) =>
@@ -35,6 +41,16 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
       const totalSeconds = minutes * 60 + seconds;
       window.open(`${videoUrl}&t=${totalSeconds}s`, "_blank");
     } else {
+      window.open(videoUrl, "_blank");
+    }
+  };
+
+  const handleChannelClick = (channelId) => {
+    setSelectedChannelId(channelId);
+  };
+
+  const handleYouTubeClick = (videoUrl) => {
+    if (videoUrl) {
       window.open(videoUrl, "_blank");
     }
   };
@@ -174,11 +190,39 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
         {/* Channel Cards */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-white mb-6">Kanal Listesi</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {/* All Channels Card */}
+            <div
+              onClick={() => handleChannelClick("all")}
+              className={`rounded-lg p-6 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer ${
+                selectedChannelId === "all"
+                  ? "bg-orange-800 ring-2 ring-orange-400"
+                  : "bg-gray-800"
+              }`}
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-gray-600">
+                  <span className="text-white text-xl">📺</span>
+                </div>
+                <h3 className="font-bold text-white mb-2">Tüm Kanallar</h3>
+                <div className="flex items-center space-x-2 text-gray-400 text-sm">
+                  <span>▷ {totalVideos} video</span>
+                  <span>•</span>
+                  <span className="text-green-400">Aktif</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Individual Channel Cards */}
             {filteredChannels.map((channel, index) => (
               <div
                 key={index}
-                className="bg-gray-800 rounded-lg p-6 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer"
+                onClick={() => handleChannelClick(channel.name)}
+                className={`rounded-lg p-6 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer ${
+                  selectedChannelId === channel.name
+                    ? "bg-orange-800 ring-2 ring-orange-400"
+                    : "bg-gray-800"
+                }`}
               >
                 <div className="flex flex-col items-center text-center">
                   <div
@@ -225,7 +269,10 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
             {filteredVideos.map((video, index) => (
               <div key={index} className="bg-gray-800 rounded-lg p-6 shadow-lg">
                 <div className="flex items-start space-x-4 mb-4">
-                  <button className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors">
+                  <button
+                    onClick={() => handleYouTubeClick(video.videoUrl)}
+                    className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors"
+                  >
                     <span className="text-white text-lg">▷</span>
                   </button>
                   <div className="flex-1">
@@ -253,9 +300,12 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
 
                 {/* Action Buttons */}
                 <div className="flex gap-3 mb-4">
-                  <button className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                  <button
+                    onClick={() => handleYouTubeClick(video.videoUrl)}
+                    className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+                  >
                     <span>📺</span>
-                    <span>YouTubeda İzle</span>
+                    <span>YouTube&apos;da İzle</span>
                   </button>
                   <button className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
                     <span>↓</span>
