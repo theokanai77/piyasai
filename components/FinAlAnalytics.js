@@ -19,6 +19,13 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
     channel.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Calculate dynamic stats
+  const totalVideos = videos.length;
+  const totalChannels = channels.length;
+  const totalTimestamps = videos.reduce((total, video) => {
+    return total + (video.timestamps ? video.timestamps.length : 0);
+  }, 0);
+
   const handleTimestampClick = (videoUrl, timestamp) => {
     // Extract time in seconds from timestamp (e.g., "00:01" -> 1 second)
     const timeMatch = timestamp.match(/(\d+):(\d+)/);
@@ -82,7 +89,9 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
             {/* Badge */}
             <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2">
               <span className="text-green-400">📈</span>
-              <span className="text-sm text-white">Bu Hafta: 10 Video</span>
+              <span className="text-sm text-white">
+                Bu Hafta: {totalVideos} Video
+              </span>
             </div>
           </div>
         </div>
@@ -108,17 +117,23 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-              <div className="text-4xl font-bold text-white mb-2">10</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {totalVideos}
+              </div>
               <div className="text-gray-400">Video Analizi</div>
             </div>
             <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-              <div className="text-4xl font-bold text-white mb-2">4</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {totalChannels}
+              </div>
               <div className="text-gray-400">
                 <span className="text-green-400">Uzm. Büyücü</span>
               </div>
             </div>
             <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-              <div className="text-4xl font-bold text-white mb-2">150+</div>
+              <div className="text-4xl font-bold text-white mb-2">
+                {totalTimestamps}+
+              </div>
               <div className="text-gray-400">
                 <span className="text-blue-400">Zaman Damgası</span>
               </div>
