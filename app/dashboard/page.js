@@ -60,6 +60,7 @@ const fallbackChannels = [
 const fallbackVideos = [
   {
     title: 'Zaman Damgalı Özet (Türkçe) - "Altın Rekoruna 25 Dolar"',
+    summary: "Bu videonun AI özeti: Altın Rekoruna 25 Dolar",
     channel: "Çiğdem Çiçek",
     videoUrl: "https://youtube.com/watch?v=sample1",
     publishDate: "2024-01-15",
@@ -83,6 +84,7 @@ const fallbackVideos = [
   },
   {
     title: 'Zaman Damgalı Özet (TR) - "Şehirler, Fiyatlar & Emlak Vergisi"',
+    summary: "Bu videonun AI özeti: Şehirler, Fiyatlar & Emlak Vergisi",
     channel: "İslam Memiş",
     videoUrl: "https://youtube.com/watch?v=sample2",
     publishDate: "2024-01-14",
@@ -153,6 +155,7 @@ async function fetchBulletins() {
     return (
       data.data.map((bulletin) => ({
         title: bulletin.title,
+        summary: bulletin.summary,
         channel: bulletin.channelId,
         videoUrl: bulletin.videoUrl,
         publishDate: bulletin.publishDate,

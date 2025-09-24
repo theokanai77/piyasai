@@ -7,6 +7,8 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedExpert, setSelectedExpert] = useState("all");
   const [selectedChannelId, setSelectedChannelId] = useState("all");
+  const [expandedVideos, setExpandedVideos] = useState(new Set());
+  const [expandedSummaries, setExpandedSummaries] = useState(new Set());
 
   // Filter videos based on search term and selected channel
   const filteredVideos = videos.filter((video) => {
@@ -53,6 +55,30 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
     if (videoUrl) {
       window.open(videoUrl, "_blank");
     }
+  };
+
+  const toggleTimestamps = (videoIndex) => {
+    setExpandedVideos((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(videoIndex)) {
+        newSet.delete(videoIndex);
+      } else {
+        newSet.add(videoIndex);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleSummary = (videoIndex) => {
+    setExpandedSummaries((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(videoIndex)) {
+        newSet.delete(videoIndex);
+      } else {
+        newSet.add(videoIndex);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -307,9 +333,16 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                     <span>📺</span>
                     <span>YouTube&apos;da İzle</span>
                   </button>
-                  <button className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
-                    <span>↓</span>
-                    <span>Detayları Gör</span>
+                  <button
+                    onClick={() => toggleSummary(index)}
+                    className="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors"
+                  >
+                    <span>{expandedSummaries.has(index) ? "↑" : "↓"}</span>
+                    <span>
+                      {expandedSummaries.has(index)
+                        ? "Detayları Gizle"
+                        : "Detayları Gör"}
+                    </span>
                   </button>
                 </div>
 
@@ -319,7 +352,10 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                     Kilit Zaman Damgaları:
                   </h5>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
-                    {video.timestamps.slice(0, 3).map((timestamp, tsIndex) => (
+                    {(expandedVideos.has(index)
+                      ? video.timestamps
+                      : video.timestamps.slice(0, 3)
+                    ).map((timestamp, tsIndex) => (
                       <div key={tsIndex} className="text-sm">
                         <button
                           onClick={() =>
@@ -333,13 +369,39 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                       </div>
                     ))}
                     {video.timestamps.length > 3 && (
-                      <button className="text-blue-400 hover:text-blue-300 text-sm hover:underline">
-                        +{video.timestamps.length - 3} daha fazla zaman
-                        damgası...
+                      <button
+                        onClick={() => toggleTimestamps(index)}
+                        className="text-blue-400 hover:text-blue-300 text-sm hover:underline"
+                      >
+                        {expandedVideos.has(index)
+                          ? "Daha az göster"
+                          : `+${
+                              video.timestamps.length - 3
+                            } daha fazla zaman damgası...`}
                       </button>
                     )}
                   </div>
                 </div>
+
+                {/* Expanded AI Summary Section */}
+                {expandedSummaries.has(index) && (
+                  <div className="border-t border-gray-700 pt-4 mt-4">
+                    <h5 className="text-white font-semibold mb-3 flex items-center">
+                      <span className="mr-2">🧠</span>
+                      AI Özeti
+                    </h5>
+                    <div className="bg-gray-700 rounded-lg p-4">
+                      <div className="mb-3">
+                        <h6 className="text-orange-400 font-semibold text-sm mb-2">
+                          {video.title}
+                        </h6>
+                        <p className="text-gray-300 text-sm leading-relaxed">
+                          {video.summary}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
