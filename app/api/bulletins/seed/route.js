@@ -4,155 +4,196 @@ import Bulletin from "@/models/Bulletin";
 // Sample data based on the existing sampleVideos structure
 const sampleBulletins = [
   {
-    title: 'Zaman Damgalı Özet (Türkçe) - "Altın Rekoruna 25 Dolar"',
+    title:
+      'Zaman Damgalı Özet (Türkçe) - "ALTIN \'DA KIYAMET SENARYOSU! | MURAT MURATOĞLU - REMZİ ÖZDEMİR"',
     summary:
-      "Finansal uzman Çiğdem Çiçek'in altın ve gümüş piyasaları hakkındaki detaylı analizi. Eylül 2025 yatırım stratejileri, teknik analiz ve portföy çeşitlendirme önerileri.",
-    channelId: "Çiğdem Çiçek",
-    videoUrl: "https://youtube.com/watch?v=sample1",
-    publishDate: new Date("2024-01-15"),
-    tags: ["altın", "gümüş", "yatırım", "finansal analiz", "Eylül 2025"],
-    duration: "10:15",
-    thumbnail: "https://img.youtube.com/vi/sample1/maxresdefault.jpg",
-    timestamps: [
-      {
-        time: "00:01",
-        text: 'Yeni ay/hafta: 1 Eylül 2025; odak "altın & gümüş" piyasaları ve yatırım stratejileri',
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "00:56",
-        text: "Altın fiyatlarında son durum ve teknik analiz",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "02:29",
-        text: "15 Eylül'e kadar Yüksek Mahkeme süreci; olası kayıp senaryoları",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "04:12",
-        text: "Gümüş yatırımı için öneriler ve risk değerlendirmesi",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "06:45",
-        text: "Dolar/TL paritesi ve etkileri",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "08:30",
-        text: "Portföy çeşitlendirme stratejileri",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
-      {
-        time: "10:15",
-        text: "Sonuç ve öneriler",
-        videoUrl: "https://youtube.com/watch?v=sample1",
-      },
+      'Altın ve petrol fiyatlamasına jeopolitik mercek: MHP–AKP gerilimi ve olası seçim, THY–Boeing tartışması, BIST’te endeks mühendisliği iddiası ve BRICS/merkez bankalarının agresif altın alımları ışığında "dijital altın" söylemi öne çıkıyor.',
+    channelId: "Murat Muratoğlu",
+    videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+    publishDate: new Date("2025-09-24"),
+    tags: [
+      "altın",
+      "Murat Muratoğlu",
+      "Remzi Özdemir",
+      "BRICS",
+      "merkez bankaları",
+      "MHP",
+      "Devlet Bahçeli",
+      "erken seçim",
+      "THY Boeing",
+      "BIST",
+      "SPK",
+      "Rus petrolü",
     ],
-  },
-  {
-    title: 'Zaman Damgalı Özet (TR) - "Şehirler, Fiyatlar & Emlak Vergisi"',
-    summary:
-      "İslam Memiş'in emlak piyasası analizi. İstanbul ve diğer şehirlerdeki konut fiyatları, emlak vergisi hesaplamaları ve yatırım önerileri.",
-    channelId: "İslam Memiş",
-    videoUrl: "https://youtube.com/watch?v=sample2",
-    publishDate: new Date("2024-01-14"),
-    tags: ["emlak", "konut", "emlak vergisi", "İstanbul", "yatırım"],
-    duration: "08:05",
-    thumbnail: "https://img.youtube.com/vi/sample2/maxresdefault.jpg",
+    duration: "59:50",
+    thumbnail: "https://img.youtube.com/vi/ATmNypsEY9M/maxresdefault.jpg",
     timestamps: [
       {
-        time: "00:01",
-        text: 'Yayının amacı: yaz sonu konut piyasası fotoğrafı; "çalışma modu" ve günün 3. videosu',
-        videoUrl: "https://youtube.com/watch?v=sample2",
+        time: "00:06",
+        text: "Açılış: altın/petrol/siyaset çerçevesi ve yayın akışı",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "00:46",
-        text: "İstanbul emlak piyasasında son gelişmeler",
-        videoUrl: "https://youtube.com/watch?v=sample2",
+        time: "01:30",
+        text: "Kıbrıs’ta yayın fikri; saha ve kulis notları",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "02:01",
-        text: "Emlak vergisi hesaplama yöntemleri ve güncellemeler",
-        videoUrl: "https://youtube.com/watch?v=sample2",
+        time: "02:48",
+        text: "Rus petrolü ~41$ iddiası; Brent ~65$ karşılaştırması",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "04:20",
-        text: "Şehir bazında emlak fiyat analizleri",
-        videoUrl: "https://youtube.com/watch?v=sample2",
+        time: "03:44",
+        text: "ABD’nin OPEC+ üzerindeki baskısı ve fiyat dinamiği",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "06:10",
-        text: "Yatırım için en uygun bölgeler ve gelecek projeksiyonları",
-        videoUrl: "https://youtube.com/watch?v=sample2",
+        time: "06:38",
+        text: "MHP–AKP hattında tansiyon; emniyette koltuk değişimleri",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "08:05",
-        text: "Sonuç ve öneriler",
-        videoUrl: "https://youtube.com/watch?v=sample2",
-      },
-    ],
-  },
-  {
-    title: "Kripto Para Analizi - Bitcoin ve Altcoin Trendleri",
-    summary:
-      "Elit Finans ekibinin kripto para piyasasındaki son gelişmeleri ve Bitcoin, Ethereum başta olmak üzere önemli altcoinlerin teknik analizi.",
-    channelId: "Elit Finans",
-    videoUrl: "https://youtube.com/watch?v=sample3",
-    publishDate: new Date("2024-01-13"),
-    tags: ["kripto", "bitcoin", "ethereum", "altcoin", "blockchain"],
-    duration: "12:30",
-    thumbnail: "https://img.youtube.com/vi/sample3/maxresdefault.jpg",
-    timestamps: [
-      {
-        time: "00:01",
-        text: "Kripto para piyasasında genel durum ve trend analizi",
-        videoUrl: "https://youtube.com/watch?v=sample3",
+        time: "09:29",
+        text: "Bahçeli’nin seçim çağrısı yapabileceği tezi",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "02:15",
-        text: "Bitcoin teknik analizi ve destek-direnç seviyeleri",
-        videoUrl: "https://youtube.com/watch?v=sample3",
+        time: "11:13",
+        text: "İsrail–Türkiye ilişkileri: çıkar dengesi ve Gazze bağlamı",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "05:20",
-        text: "Ethereum gelişmeleri ve DeFi ekosistemi",
-        videoUrl: "https://youtube.com/watch?v=sample3",
+        time: "13:03",
+        text: "Katar’a yönelik hava operasyonu iddiasının okuması",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "08:45",
-        text: "Altcoin seçimi ve portföy dağılımı önerileri",
-        videoUrl: "https://youtube.com/watch?v=sample3",
+        time: "15:12",
+        text: "THY–Boeing 300 uçak tartışması; borsadaki hızlı fiyatlama",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
       {
-        time: "11:10",
-        text: "Risk yönetimi ve stop-loss stratejileri",
-        videoUrl: "https://youtube.com/watch?v=sample3",
+        time: "18:21",
+        text: "BIST’te sert satışlar; BoA/Tera etkisi iddiası",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "19:10",
+        text: "Siyasi risk: Bahçeli’nin elindeki koz ve seçim ihtimali",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "23:34",
+        text: "Bitcoin stratejisi (100k$ altı alım, staking notu)",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "25:20",
+        text: "Borsa operasyonları: kara para aklama iddiaları",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "26:40",
+        text: "“Para girişi yoksa endeks mühendisliği var” tezi",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "31:36",
+        text: "Yakın dönemde kontrollü halka arzlar gelebilir",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "33:07",
+        text: "MB kur stratejisi: enflasyonun bir tık üstü artış",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "38:25",
+        text: "Alım gücü erozyonu; beklenen vs. açıklanan enflasyon",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "39:43",
+        text: "Altın ithalat kısıtının maliyeti iddiası (~25 milyar$)",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "41:26",
+        text: "Hindistan/Çin tahvil satıp altın alıyor; CB alımları",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "51:24",
+        text: "Uzun vade: altın 5 yılda 9.000$ bandı iddiası",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
+      },
+      {
+        time: "58:50",
+        text: "Kapanış: vadeliler ve tahvil piyasasını izleme önerisi",
+        videoUrl: "https://www.youtube.com/watch?v=ATmNypsEY9M",
       },
     ],
   },
 ];
 
-export async function POST(request) {
+export async function POST() {
   try {
     await connectMongo();
 
-    // Clear existing bulletins (optional - remove this if you want to keep existing data)
-    //await Bulletin.deleteMany({});
+    const results = [];
 
-    // Insert sample bulletins
-    const insertedBulletins = await Bulletin.insertMany(sampleBulletins);
+    for (const bulletin of sampleBulletins) {
+      try {
+        const result = await Bulletin.findOneAndUpdate(
+          {
+            title: bulletin.title,
+            channelId: bulletin.channelId,
+          },
+          bulletin,
+          {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true,
+          }
+        );
+        results.push({
+          title: bulletin.title,
+          channel: bulletin.channelId,
+          status: "upserted",
+          _id: result._id,
+        });
+      } catch (videoError) {
+        console.error(
+          `Error processing bulletin ${bulletin.title}:`,
+          videoError
+        );
+        results.push({
+          title: bulletin.title,
+          channel: bulletin.channelId,
+          status: "failed",
+          error: videoError.message,
+        });
+      }
+    }
 
     return Response.json({
       success: true,
-      message: `Successfully seeded ${insertedBulletins.length} bulletins`,
-      data: insertedBulletins,
+      message: `Successfully processed ${results.length} bulletins`,
+      added: results.filter((r) => r.status === "upserted").length,
+      total: results.length,
+      results: results,
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error("Error seeding bulletins:", error);
     return Response.json(
-      { success: false, error: "Failed to seed bulletins" },
+      {
+        success: false,
+        error: "Failed to seed bulletins",
+        details:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+      },
       { status: 500 }
     );
   }
