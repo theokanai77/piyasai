@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Haftalık Tematik Finans Analizi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body {
+        background-color: #111827;
+      } /* bg-gray-900 */
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // --- İKON BİLEŞENLERİ ---
+      const BullIcon = () => (
+        <svg
+          className="w-5 h-5 inline-block mr-1"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+            clipRule="evenodd"
+          ></path>
+        </svg>
+      );
+      const BearIcon = () => (
+        <svg
+          className="w-5 h-5 inline-block mr-1"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1.707-11.707a1 1 0 00-1.414 0L9 7.586V4a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 000-1.414z"
+            clipRule="evenodd"
+          ></path>
+        </svg>
+      );
+      const NeutralIcon = () => (
+        <svg
+          className="w-5 h-5 inline-block mr-1"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
+            clipRule="evenodd"
+          ></path>
+        </svg>
+      );
+      const LightbulbIcon = () => (
+        <svg
+          className="w-8 h-8 text-yellow-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+          ></path>
+        </svg>
+      );
+      const LinkIcon = () => (
+        <svg
+          className="w-4 h-4 inline-block ml-2 text-cyan-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+          ></path>
+        </svg>
+      );
+
+      // --- VERİ ---
+      // Bu veri yapısı, yüklenen PDF dosyasının analiziyle oluşturulmuştur.
+      const reportData = {
+        weekOf: "26 Eylül 2025 Haftası",
+        bigPictureSummary: {
+          summary:
+            "Bu hafta uzmanlar, küresel enflasyon ve resesyon risklerinin devam ettiği bir ortamda, değerli metallerin (altın, gümüş) güvenli liman olarak öne çıktığını belirtiyor. JP Morgan'ın 2029 için 6000$ ons altın tahmini ve fiziksel altın kıtlığı vurgulanırken, Bitcoin için riskler, DXY'de güçlenme ve Borsa İstanbul için tehlike sinyalleri öne çıkıyor. Fed'in faiz indirimlerinin enflasyonu azdırma potansiyeli ve küresel güç oyunları da piyasalardaki belirsizliği artırıyor. Küçük yatırımcıların bilinçli adımlar atması ve doğru alım fırsatlarını beklemesi gerektiği vurgulanıyor.",
+          keyThemes: [
+            "Küresel Enflasyon ve Resesyon Riskleri",
+            "Değerli Metallerde Güvenli Liman ve Yükseliş Beklentisi",
+            "Dolar Endeksi (DXY) Güçlenmesi",
+            "Borsa İstanbul ve Kripto Piyasasında Riskler",
+            "Fed Politikalarının Potansiyel Etkileri",
+          ],
+        },
+        sentimentAnalysis: [
+          {
+            asset: "Gram Altın",
+            selcukGecer: "Pozitif",
+            islamMemis: "Pozitif",
+            devrimAkyil: "Pozitif",
+            artuncKocabalkan: "Pozitif",
+            cihatCicek: "Pozitif",
+            elitfinans: "Pozitif",
+          },
+          {
+            asset: "Gümüş",
+            selcukGecer: "Veri Yok",
+            islamMemis: "Pozitif",
+            devrimAkyil: "Pozitif",
+            artuncKocabalkan: "Pozitif",
+            cihatCicek: "Pozitif",
+            elitfinans: "Pozitif",
+          },
+          {
+            asset: "Dolar/TL",
+            selcukGecer: "Pozitif",
+            islamMemis: "Pozitif",
+            devrimAkyil: "Veri Yok",
+            artuncKocabalkan: "Pozitif",
+            cihatCicek: "Veri Yok",
+            elitfinans: "Pozitif",
+          },
+          {
+            asset: "BIST 100",
+            selcukGecer: "Negatif",
+            islamMemis: "Negatif",
+            devrimAkyil: "Negatif",
+            artuncKocabalkan: "Negatif",
+            cihatCicek: "Veri Yok",
+            elitfinans: "Negatif",
+          },
+          {
+            asset: "Kripto",
+            selcukGecer: "Negatif",
+            islamMemis: "Pozitif",
+            devrimAkyil: "Veri Yok",
+            artuncKocabalkan: "Negatif",
+            cihatCicek: "Veri Yok",
+            elitfinans: "Negatif",
+          },
+        ],
+        thematicGrouping: [
+          {
+            theme: "Makroekonomi ve Küresel Riskler",
+            summaries: [
+              {
+                analyst: "Selçuk Geçer",
+                quote:
+                  "Yeni atanan Fed üyesi 'faiz indirimleri 2 yıl keskin şekilde sürmeli' diyor; bu yol enflasyonu azdırırsa büyük kriz kapıya dayanır.",
+                videoId: "qJalSqHDLTA",
+                timestamp: "02:50",
+              },
+              {
+                analyst: "Artunç Kocabalkan",
+                quote:
+                  "ABD çekirdek PCE enflasyonu %2.7: Fed'in hedefin üzerinde ama istihdam odaklı bakış.",
+                videoId: "WIwX_L050GU",
+                timestamp: "00:40",
+              },
+              {
+                analyst: "Devrim Akyıl",
+                quote:
+                  "ABD 10 yıllıkları kritik: 4.13 seviyesi dünya piyasalarının kaderini belirleyebilir.",
+                videoId: "Eox5iri7P-M",
+                timestamp: "17:00",
+              },
+              {
+                analyst: "Cihat E. Çiçek",
+                quote:
+                  "ABD'nin yeni gümrük vergileri, küresel korumacılık ve jeopolitik kutuplaşma (ABD/İsrail vs. Rusya/Çin) başlıkları finans akışlarını şekillendiriyor.",
+                videoId: "KqvhQSrt-aU",
+                timestamp: "09:25",
+              },
+              {
+                analyst: "Elitfinans",
+                quote:
+                  "Analiz: fiyat tahminlerinin ötesinde küresel güç oyunları yorumu.",
+                videoId: "1AuuvMcN9mY",
+                timestamp: "14:32",
+              },
+            ],
+          },
+          {
+            theme: "Değerli Metaller: Altın ve Gümüş",
+            summaries: [
+              {
+                analyst: "Cihat E. Çiçek",
+                quote:
+                  "JP Morgan'ın '2029'da ons 6.000$' projeksiyonu konuşuluyor; kısa vade 4.200$ eşiği.",
+                videoId: "KqvhQSrt-aU",
+                timestamp: "11:12",
+              },
+              {
+                analyst: "Elitfinans",
+                quote:
+                  "Yıl sonu gram altın hedefi: 5400 ₺. Balinalar ve elit aileler fiziki altın topluyor.",
+                videoId: "1AuuvMcN9mY",
+                timestamp: "07:00",
+              },
+              {
+                analyst: "İslam Memiş",
+                quote:
+                  "Gram gümüşte 60 TL görülüyor: yıl hedefi tutunca 'bonus' aşaması.",
+                videoId: "vREda5q9RGQ",
+                timestamp: "13:07",
+              },
+              {
+                analyst: "Devrim Akyıl",
+                quote:
+                  "Altın yeni rezerv para olabilir; merkez bankaları artık tahvilden çok altın tutuyor.",
+                videoId: "Eox5iri7P-M",
+                timestamp: "08:18",
+              },
+              {
+                analyst: "Selçuk Geçer",
+                quote:
+                  "Altın 4.000-4.500-5.000$ yolu; gram altın 7.000 TL senaryosu.",
+                videoId: "qJalSqHDLTA",
+                timestamp: "07:55",
+              },
+              {
+                analyst: "Devrim Akyıl",
+                quote: "Gümüş formasyonu: cup & handle hedefi 83$.",
+                videoId: "Eox5iri7P-M",
+                timestamp: "07:37",
+              },
+              {
+                analyst: "İslam Memiş",
+                quote:
+                  "Ons altın: 3.790 → 3.730-3.750$; kısa vadede kâr satışı bekleniyor.",
+                videoId: "vREda5q9RGQ",
+                timestamp: "10:49",
+              },
+            ],
+          },
+          {
+            theme: "Döviz Piyasası: Dolar ve Euro",
+            summaries: [
+              {
+                analyst: "Selçuk Geçer",
+                quote:
+                  "'Doların gerçek değeri 80-120 TL' iddiası; gram altında 12.000 TL projeksiyonu.",
+                videoId: "qJalSqHDLTA",
+                timestamp: "09:40",
+              },
+              {
+                analyst: "Elitfinans",
+                quote: "Dolar adil değer: 42-50 ; ani sıçrama riski.",
+                videoId: "1AuuvMcN9mY",
+                timestamp: "07:24",
+              },
+              {
+                analyst: "İslam Memiş",
+                quote: "DXY 96-98 bandı.",
+                videoId: "vREda5q9RGQ",
+                timestamp: "16:04",
+              },
+              {
+                analyst: "Cihat E. Çiçek",
+                quote:
+                  "Endonezya'nın kur müdahalesi; Asya'dan kırılganlık sinyalleri.",
+                videoId: "KqvhQSrt-aU",
+                timestamp: "21:18",
+              },
+            ],
+          },
+          {
+            theme: "Yerel Borsa ve Kripto Piyasaları",
+            summaries: [
+              {
+                analyst: "Elitfinans",
+                quote: "Borsa İstanbul'da tehlike: 236 $ altı riskli.",
+                videoId: "1AuuvMcN9mY",
+                timestamp: "08:47",
+              },
+              {
+                analyst: "İslam Memiş",
+                quote: "BIST 100 teknik: 11.280-11.350 destek, 11.800 hedef.",
+                videoId: "vREda5q9RGQ",
+                timestamp: "09:49",
+              },
+              {
+                analyst: "Artunç Kocabalkan",
+                quote: "Kripto: Bitcoin için kritik seviyeler 110.700-115.000.",
+                videoId: "WIwX_L050GU",
+                timestamp: "09:14",
+              },
+              {
+                analyst: "Elitfinans",
+                quote: "Bitcoin 112.000 $ üzerinde kalırsa 'yıkım' uyarısı.",
+                videoId: "1AuuvMcN9mY",
+                timestamp: "11:02",
+              },
+              {
+                analyst: "İslam Memiş",
+                quote:
+                  "Bitcoin: 112.5k$ altı alım fırsatı: 117.5-118.5k$ hedef.",
+                videoId: "vREda5q9RGQ",
+                timestamp: "13:50",
+              },
+            ],
+          },
+        ],
+      };
+
+      // --- YARDIMCI FONKSİYON VE BİLEŞENLER ---
+      const convertTimestampToSeconds = (timestamp) => {
+        if (typeof timestamp !== "string" || timestamp.trim() === "") return 0;
+        const parts = timestamp.split(":").map((s) => parseInt(s.trim(), 10));
+        if (parts.some(isNaN) || parts.length === 0 || parts.length > 3)
+          return 0;
+        return parts
+          .reverse()
+          .reduce((acc, val, index) => acc + val * Math.pow(60, index), 0);
+      };
+
+      const SentimentCell = ({ sentiment }) => {
+        const styles = {
+          Pozitif: "bg-green-800 text-green-200",
+          Negatif: "bg-red-800 text-red-200",
+          Nötr: "bg-gray-600 text-gray-200",
+          "Veri Yok": "bg-gray-700 text-gray-400",
+        };
+        const icons = {
+          Pozitif: <BullIcon />,
+          Negatif: <BearIcon />,
+          Nötr: <NeutralIcon />,
+        };
+        return (
+          <td className="px-4 py-3 text-sm whitespace-nowrap">
+            <span
+              className={`px-3 py-1 font-semibold leading-tight rounded-full ${
+                styles[sentiment] || styles["Veri Yok"]
+              }`}
+            >
+              {icons[sentiment]} {sentiment}
+            </span>
+          </td>
+        );
+      };
+
+      const SummaryCard = ({ summary }) => {
+        const seconds = convertTimestampToSeconds(summary.timestamp);
+        const videoUrl = `https://www.youtube.com/watch?v=${summary.videoId}&t=${seconds}s`;
+
+        return (
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 hover:border-cyan-500 hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
+          >
+            <h4 className="text-lg font-bold text-white mb-2">
+              {summary.analyst}
+            </h4>
+            <p className="text-gray-300 flex-grow">"{summary.quote}"</p>
+            <div className="text-right text-sm font-mono text-cyan-400 mt-4">
+              {summary.timestamp}
+              <LinkIcon />
+            </div>
+          </a>
+        );
+      };
+
+      // --- ANA UYGULAMA BİLEŞENİ ---
+      function App() {
+        return (
+          <div className="bg-gray-900 min-h-screen text-gray-200 font-sans">
+            <div className="container mx-auto px-4 py-8">
+              <header className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-white">
+                  Haftalık Finans Raporu
+                </h1>
+                <p className="text-xl text-gray-400 mt-2">
+                  {reportData.weekOf}
+                </p>
+              </header>
+
+              <section id="big-picture" className="mb-12">
+                <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl shadow-lg p-6 md:p-8">
+                  <div className="flex items-center mb-4">
+                    <LightbulbIcon />
+                    <h2 className="text-3xl font-bold ml-4 text-yellow-300">
+                      Haftanın "Büyük Resmi"
+                    </h2>
+                  </div>
+                  <p className="text-lg text-gray-300 mb-6">
+                    {reportData.bigPictureSummary.summary}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="font-semibold mr-2">
+                      Öne Çıkan Temalar:
+                    </span>
+                    {reportData.bigPictureSummary.keyThemes.map(
+                      (theme, index) => (
+                        <span
+                          key={index}
+                          className="bg-blue-900/50 text-blue-300 text-sm font-medium px-3 py-1 rounded-full"
+                        >
+                          {theme}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+              </section>
+
+              <section id="sentiment-analysis" className="mb-12">
+                <h2 className="text-3xl font-bold mb-6 text-white">
+                  Uzman Görüşü: Duygu Analizi
+                </h2>
+                <div className="overflow-x-auto bg-gray-800 rounded-lg shadow-md border border-gray-700">
+                  <table className="min-w-full divide-y divide-gray-700">
+                    <thead className="bg-gray-700/50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          Varlık
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          S. Geçer
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          İ. Memiş
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          D. Akyıl
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          A. Kocabalkan
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          C. E. Çiçek
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                          Elitfinans
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-700">
+                      {reportData.sentimentAnalysis.map((item) => (
+                        <tr
+                          key={item.asset}
+                          className="hover:bg-gray-700/40 transition-colors duration-200"
+                        >
+                          <td className="px-4 py-3 whitespace-nowrap font-medium text-white">
+                            {item.asset}
+                          </td>
+                          <SentimentCell sentiment={item.selcukGecer} />
+                          <SentimentCell sentiment={item.islamMemis} />
+                          <SentimentCell sentiment={item.devrimAkyil} />
+                          <SentimentCell sentiment={item.artuncKocabalkan} />
+                          <SentimentCell sentiment={item.cihatCicek} />
+                          <SentimentCell sentiment={item.elitfinans} />
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section id="thematic-grouping">
+                <h2 className="text-3xl font-bold mb-6 text-white">
+                  Tematik Analizler
+                </h2>
+                <div className="space-y-10">
+                  {reportData.thematicGrouping.map((group) => (
+                    <div key={group.theme}>
+                      <h3 className="text-2xl font-semibold mb-5 pb-2 border-b-2 border-gray-700 text-cyan-400">
+                        {group.theme}
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {group.summaries.map((summary, index) => (
+                          <SummaryCard key={index} summary={summary} />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>

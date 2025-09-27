@@ -94,10 +94,10 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">
-                  FinAl Analytics
+                  Piyasai Analytics
                 </h1>
                 <p className="text-sm text-gray-400">
-                  Uzman Görüşleri & AI Analiz
+                  Uzman Görüşleri & Analiz
                 </p>
               </div>
             </div>
@@ -115,17 +115,15 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                 <span className="mr-2">▷</span>
                 Video Özetleri
               </button>
-              <button
-                onClick={() => setActiveTab("thematic-analysis")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === "thematic-analysis"
-                    ? "bg-orange-500 text-white"
-                    : "text-gray-400 hover:text-white"
-                }`}
+              <a
+                href="/tematik.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-400 hover:text-white hover:bg-gray-700"
               >
                 <span className="mr-2">📊</span>
                 Tematik Analiz
-              </button>
+              </a>
             </div>
 
             {/* Badge */}
