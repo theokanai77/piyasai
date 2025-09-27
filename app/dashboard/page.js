@@ -111,7 +111,11 @@ const fallbackVideos = [
 // Function to fetch channels data
 async function fetchChannels() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://www.kaplanokan.com"
+        : "http://localhost:3000");
     const response = await fetch(`${baseUrl}/api/channels`, {
       cache: "no-store", // Ensure fresh data
     });
@@ -136,7 +140,11 @@ async function fetchChannels() {
 // Function to fetch bulletins data
 async function fetchBulletins() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://www.kaplanokan.com"
+        : "http://localhost:3000");
     const response = await fetch(`${baseUrl}/api/bulletins/all`, {
       cache: "no-store", // Ensure fresh data
     });
