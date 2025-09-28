@@ -142,13 +142,12 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
         <section className="mb-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <span className="text-orange-500">⚡</span> AI Destekli Video
-              Analizleri
+              <span className="text-orange-500">⚡</span> Video Özet Analizleri
             </h1>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Finansal uzmanların görüşlerini yapay zeka ile analiz edip,{" "}
+              Finansal uzmanların görüşlerini analiz edip,{" "}
               <span className="text-orange-500 font-semibold">
-                kullanılabilir zaman damgalarıyla
+                dakika dakika özetlerle
               </span>{" "}
               sunan platform
             </p>
@@ -167,7 +166,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                 {totalChannels}
               </div>
               <div className="text-gray-400">
-                <span className="text-green-400">Uzm. Büyücü</span>
+                <span className="text-green-400">Uzm. Ekonomist</span>
               </div>
             </div>
             <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
@@ -175,7 +174,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                 {totalTimestamps}+
               </div>
               <div className="text-gray-400">
-                <span className="text-blue-400">Zaman Damgası</span>
+                <span className="text-blue-400">Dakika Damgası</span>
               </div>
             </div>
           </div>
@@ -347,7 +346,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                 {/* Timestamps */}
                 <div className="border-t border-gray-700 pt-4">
                   <h5 className="text-white font-semibold mb-3">
-                    Kilit Zaman Damgaları:
+                    Kilit Dakikalar:
                   </h5>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {(expandedVideos.has(index)
@@ -375,7 +374,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                           ? "Daha az göster"
                           : `+${
                               video.timestamps.length - 3
-                            } daha fazla zaman damgası...`}
+                            } daha fazla önemli dakika...`}
                       </button>
                     )}
                   </div>
@@ -410,8 +409,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
       <footer className="border-t border-gray-800 bg-gray-900 py-4">
         <div className="container mx-auto px-4 flex justify-end">
           <div className="bg-gray-800 rounded-lg px-3 py-1 text-sm text-gray-400">
-            <span className="mr-2">b</span>
-            Made in Bolt
+            <span className="mr-2"></span>
           </div>
         </div>
       </footer>
