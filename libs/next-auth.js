@@ -27,8 +27,15 @@ export const authOptions = {
     ...(connectMongo
       ? [
           EmailProvider({
-            server: process.env.EMAIL_SERVER,
-            from: config.mailgun.fromNoReply,
+            server: {
+              host: "smtp.resend.com",
+              port: 587,
+              auth: {
+                user: "resend",
+                pass: process.env.RESEND_API_KEY,
+              },
+            },
+            from: process.env.EMAIL_FROM || "noreply@resend.kaplanokan.com",
           }),
         ]
       : []),
@@ -44,6 +51,29 @@ export const authOptions = {
         session.user.id = token.sub;
       }
       return session;
+    },
+    signIn: async ({ user, account, profile, email, credentials }) => {
+      try {
+        console.log("🔐 NextAuth signIn callback triggered:", {
+          user: user?.email,
+          account: account?.type,
+          provider: account?.provider,
+        });
+
+        // Log Resend email authentication attempts
+        if (account?.type === "email") {
+          console.log("📧 Resend email authentication attempt:", {
+            email: user?.email,
+            provider: account?.provider,
+          });
+        }
+
+        return true;
+      } catch (error) {
+        console.error("❌ NextAuth Resend hatası debug et:", error.message);
+        console.error("Full error:", error);
+        return false;
+      }
     },
   },
   session: {
