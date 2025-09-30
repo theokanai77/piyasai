@@ -52,7 +52,7 @@ export const authOptions = {
       }
       return session;
     },
-    signIn: async ({ user, account, profile, email, credentials }) => {
+    signIn: async ({ user, account }) => {
       try {
         console.log("🔐 NextAuth signIn callback triggered:", {
           user: user?.email,

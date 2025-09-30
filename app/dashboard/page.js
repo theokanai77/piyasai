@@ -1,5 +1,9 @@
 import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/libs/next-auth";
 import FinAlAnalytics from "@/components/FinAlAnalytics";
+import User from "@/models/User";
+import connectMongo from "@/libs/mongoose";
 
 export const dynamic = "force-dynamic";
 
@@ -140,6 +144,21 @@ async function fetchChannels() {
 // Function to fetch bulletins data
 async function fetchBulletins() {
   try {
+    // Get user session for filtering
+    const session = await getServerSession(authOptions);
+    let followedChannels = [];
+
+    if (session?.user?.id) {
+      try {
+        await connectMongo();
+        const user = await User.findById(session.user.id);
+        followedChannels = user ? user.followedChannels : [];
+      } catch (dbError) {
+        console.error("Error fetching user followed channels:", dbError);
+        // Continue with empty array if DB error
+      }
+    }
+
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
       (process.env.NODE_ENV === "production"
@@ -160,19 +179,29 @@ async function fetchBulletins() {
     }
 
     // Transform bulletins to match FinAlAnalytics expected format
-    return (
-      data.data.map((bulletin) => ({
-        title: bulletin.title,
-        summary: bulletin.summary,
-        channel: bulletin.channelId,
-        videoUrl: bulletin.videoUrl,
-        publishDate: bulletin.publishDate,
-        timestamps: bulletin.timestamps || [],
-      })) || []
-    );
+    const transformedData = data.data.map((bulletin) => ({
+      title: bulletin.title,
+      summary: bulletin.summary,
+      channel: bulletin.channelId,
+      videoUrl: bulletin.videoUrl,
+      publishDate: bulletin.publishDate,
+      timestamps: bulletin.timestamps || [],
+    }));
+
+    // Filter by followed channels if user has followed channels
+    if (followedChannels.length > 0) {
+      return transformedData.filter((bulletin) =>
+        followedChannels.includes(bulletin.channel)
+      );
+    }
+
+    return transformedData || [];
   } catch (error) {
     console.error("Error fetching bulletins:", error);
-    return fallbackVideos;
+
+    // Apply fallback filtering for MVP
+    const filteredFallback = fallbackVideos.filter((v) => true); // Show all for now
+    return filteredFallback;
   }
 }
 

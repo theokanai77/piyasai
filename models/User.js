@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import toJSON from "./plugins/toJSON";
+import toJSON from "./plugins/toJSON.js";
 
 // USER SCHEMA
 const userSchema = mongoose.Schema(
@@ -35,6 +35,11 @@ const userSchema = mongoose.Schema(
     hasAccess: {
       type: Boolean,
       default: false,
+    },
+    // Array of followed channel names (e.g., ['Devrim Akyıl', 'İslam Memiş'])
+    followedChannels: {
+      type: [String],
+      default: [],
     },
   },
   {

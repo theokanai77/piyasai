@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import User from "@/models/User";
-import Bulletin from "@/models/Bulletin";
 
 const connectMongo = async () => {
   if (!process.env.MONGODB_URI) {
