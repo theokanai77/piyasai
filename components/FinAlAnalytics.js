@@ -1061,7 +1061,23 @@ function VarliklarTab() {
     return filteredRow;
   });
 
+  const filteredThematicGroups = useMemo(() => {
+    return reportData.thematicGrouping
+      .map((group) => ({
+        ...group,
+        summaries: group.summaries.filter(
+          (summary) =>
+            followedChannels.length === 0 ||
+            followedChannels
+              .map((c) => c.toLowerCase())
+              .includes(summary.analyst.toLowerCase())
+        ),
+      }))
+      .filter((group) => group.summaries.length > 0); // Boş group'ları atla
+  }, [reportData.thematicGrouping, followedChannels]);
+
   console.log("Filtered analysts:", selectedAnalysts);
+  console.log("Filtered thematic groups:", filteredThematicGroups);
 
   return (
     <div className="bg-gray-900 min-h-screen text-gray-200 font-sans">
@@ -1100,85 +1116,115 @@ function VarliklarTab() {
         </section>
 
         {/* Sentiment Analysis Section */}
-        <section id="sentiment-analysis" className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-white">
-            Uzman Görüşü: Duygu Analizi
-          </h2>
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-sm text-gray-400">
-              Seçili {selectedAnalysts.length} analist gösteriliyor
-            </span>
-            <button
-              onClick={() => {
-                /* Tümünü göster logic, ama şimdilik pass */
-              }}
-              className="text-blue-400 hover:underline text-sm"
-            >
-              Tümünü Göster
-            </button>
-          </div>
-          <div className="overflow-x-auto bg-gray-800 rounded-lg shadow-md border border-gray-700">
-            <table className="min-w-full divide-y divide-gray-700">
-              <thead className="bg-gray-700/50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    Varlık
-                  </th>
-                  {selectedAnalysts.map((field) => (
-                    <th
-                      key={field}
-                      className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider"
-                    >
-                      {analystMapping[field].split(" ")[0]}{" "}
-                      {/* İlk kelime: S. Geçer gibi */}
+        {followedChannels.length > 0 && (
+          <section id="sentiment-analysis" className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-white">
+              Uzman Görüşü: Duygu Analizi
+            </h2>
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-sm text-gray-400">
+                Seçili {selectedAnalysts.length} analist gösteriliyor
+              </span>
+              <button
+                onClick={() => {
+                  /* Tümünü göster logic, ama şimdilik pass */
+                }}
+                className="text-blue-400 hover:underline text-sm"
+              >
+                Tümünü Göster
+              </button>
+            </div>
+            <div className="overflow-x-auto bg-gray-800 rounded-lg shadow-md border border-gray-700">
+              <table className="min-w-full divide-y divide-gray-700">
+                <thead className="bg-gray-700/50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
+                      Varlık
                     </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-700">
-                {filteredSentimentAnalysis.map((item, rowIndex) => (
-                  <tr
-                    key={rowIndex}
-                    className="hover:bg-gray-700/40 transition-colors duration-200"
-                  >
-                    <td className="px-4 py-3 whitespace-nowrap font-medium text-white">
-                      {item.asset}
-                    </td>
                     {selectedAnalysts.map((field) => (
-                      <SentimentCell key={field} sentiment={item[field]} />
+                      <th
+                        key={field}
+                        className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider"
+                      >
+                        {analystMapping[field].split(" ")[0]}{" "}
+                        {/* İlk kelime: S. Geçer gibi */}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {selectedAnalysts.length === 0 && (
-            <p className="text-gray-400 text-center py-4">
-              Seçili kanal yok – tüm tablo gösteriliyor.
-            </p>
-          )}
-        </section>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+                  {filteredSentimentAnalysis.map((item, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className="hover:bg-gray-700/40 transition-colors duration-200"
+                    >
+                      <td className="px-4 py-3 whitespace-nowrap font-medium text-white">
+                        {item.asset}
+                      </td>
+                      {selectedAnalysts.map((field) => (
+                        <SentimentCell key={field} sentiment={item[field]} />
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {selectedAnalysts.length === 0 && (
+              <p className="text-gray-400 text-center py-4">
+                Seçili kanal yok – tüm tablo gösteriliyor.
+              </p>
+            )}
+          </section>
+        )}
 
         {/* Thematic Analysis Section */}
-        <section id="thematic-grouping">
-          <h2 className="text-3xl font-bold mb-6 text-white">
-            Tematik Analizler
-          </h2>
-          <div className="space-y-10">
-            {reportData.thematicGrouping.map((group) => (
-              <div key={group.theme}>
-                <h3 className="text-2xl font-semibold mb-5 pb-2 border-b-2 border-gray-700 text-cyan-400">
-                  {group.theme}
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {group.summaries.map((summary, index) => (
-                    <SummaryCard key={index} summary={summary} />
-                  ))}
+        {followedChannels.length > 0 && (
+          <section id="thematic-grouping">
+            <h2 className="text-3xl font-bold mb-6 text-white">
+              Tematik Analizler
+            </h2>
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-sm text-gray-400">
+                Seçili {followedChannels.length} kanal bazında filtrelendi (
+                {filteredThematicGroups.reduce(
+                  (total, g) => total + g.summaries.length,
+                  0
+                )}{" "}
+                içerik)
+              </span>
+              <button
+                onClick={() => {
+                  /* Tümünü göster, pass */
+                }}
+                className="text-blue-400 hover:underline text-sm"
+              >
+                Tümünü Göster
+              </button>
+            </div>
+            <div className="space-y-10">
+              {filteredThematicGroups.map((group) => (
+                <div key={group.theme}>
+                  <h3 className="text-2xl font-semibold mb-5 pb-2 border-b-2 border-gray-700 text-cyan-400">
+                    {group.theme}
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {group.summaries.map((summary, index) => (
+                      <SummaryCard key={index} summary={summary} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+              {filteredThematicGroups.length === 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <p className="text-gray-400 text-center py-8 col-span-full">
+                    Seçili kanallar için tematik içerik yok. Daha fazla kanal
+                    seçin.
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
