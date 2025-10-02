@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 
 // Icon Components
@@ -101,6 +101,18 @@ const SentimentCell = ({ sentiment }) => {
     Negatif: <BearIcon />,
     Nötr: <NeutralIcon />,
   };
+
+  // Handle undefined/empty sentiment
+  if (!sentiment || sentiment === undefined || sentiment === "") {
+    return (
+      <td className="px-4 py-3 text-sm whitespace-nowrap">
+        <span className="bg-gray-700 text-gray-400 px-3 py-1 rounded-full text-sm">
+          Veri Yok
+        </span>
+      </td>
+    );
+  }
+
   return (
     <td className="px-4 py-3 text-sm whitespace-nowrap">
       <span
@@ -774,6 +786,23 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
 }
 
 function VarliklarTab() {
+  // State for followed channels
+  const [followedChannels, setFollowedChannels] = useState([]);
+  const [loadingFollow, setLoadingFollow] = useState(false);
+  const { data: session } = useSession();
+
+  // Fetch followed channels on component mount
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetch("/api/follow-channels")
+        .then((res) => res.json())
+        .then((data) => setFollowedChannels(data.followedChannels || []))
+        .catch((error) =>
+          console.error("Error fetching followed channels:", error)
+        );
+    }
+  }, [session]);
+
   // Hardcoded report data from tematik.html
   const reportData = {
     weekOf: "26 Eylül 2025 Haftası",
@@ -998,6 +1027,42 @@ function VarliklarTab() {
     ],
   };
 
+  // Analyst mapping for sentiment analysis
+  const analystMapping = {
+    selcukGecer: "Selçuk Geçer",
+    islamMemis: "İslam Memiş",
+    devrimAkyil: "Devrim Akyıl",
+    artuncKocabalkan: "Artunç Kocabalkan",
+    cihatCicek: "Cihat E. Çiçek",
+    elitfinans: "Elit Finans",
+  };
+
+  // Filter sentiment analysis based on followed channels
+  const selectedAnalysts =
+    followedChannels.length > 0
+      ? followedChannels
+          .map((channel) =>
+            Object.keys(analystMapping).find(
+              (key) => analystMapping[key] === channel
+            )
+          )
+          .filter(Boolean)
+      : Object.keys(analystMapping);
+
+  const filteredSentimentAnalysis = reportData.sentimentAnalysis.map((row) => {
+    const filteredRow = { asset: row.asset };
+    selectedAnalysts.forEach((field) => {
+      if (!row[field]) {
+        filteredRow[field] = "Veri Yok";
+      } else {
+        filteredRow[field] = row[field];
+      }
+    });
+    return filteredRow;
+  });
+
+  console.log("Filtered analysts:", selectedAnalysts);
+
   return (
     <div className="bg-gray-900 min-h-screen text-gray-200 font-sans">
       <div className="container mx-auto px-4 py-8">
@@ -1039,6 +1104,19 @@ function VarliklarTab() {
           <h2 className="text-3xl font-bold mb-6 text-white">
             Uzman Görüşü: Duygu Analizi
           </h2>
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-sm text-gray-400">
+              Seçili {selectedAnalysts.length} analist gösteriliyor
+            </span>
+            <button
+              onClick={() => {
+                /* Tümünü göster logic, ama şimdilik pass */
+              }}
+              className="text-blue-400 hover:underline text-sm"
+            >
+              Tümünü Göster
+            </button>
+          </div>
           <div className="overflow-x-auto bg-gray-800 rounded-lg shadow-md border border-gray-700">
             <table className="min-w-full divide-y divide-gray-700">
               <thead className="bg-gray-700/50">
@@ -1046,46 +1124,39 @@ function VarliklarTab() {
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
                     Varlık
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    Selçuk Geçer
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    İslam Memiş
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    Devrim Akyıl
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    Artunç Kocabalkan
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    Cihat E. Çiçek
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">
-                    Elit Finans
-                  </th>
+                  {selectedAnalysts.map((field) => (
+                    <th
+                      key={field}
+                      className="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider"
+                    >
+                      {analystMapping[field].split(" ")[0]}{" "}
+                      {/* İlk kelime: S. Geçer gibi */}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
-                {reportData.sentimentAnalysis.map((item) => (
+                {filteredSentimentAnalysis.map((item, rowIndex) => (
                   <tr
-                    key={item.asset}
+                    key={rowIndex}
                     className="hover:bg-gray-700/40 transition-colors duration-200"
                   >
                     <td className="px-4 py-3 whitespace-nowrap font-medium text-white">
                       {item.asset}
                     </td>
-                    <SentimentCell sentiment={item.selcukGecer} />
-                    <SentimentCell sentiment={item.islamMemis} />
-                    <SentimentCell sentiment={item.devrimAkyil} />
-                    <SentimentCell sentiment={item.artuncKocabalkan} />
-                    <SentimentCell sentiment={item.cihatCicek} />
-                    <SentimentCell sentiment={item.elitfinans} />
+                    {selectedAnalysts.map((field) => (
+                      <SentimentCell key={field} sentiment={item[field]} />
+                    ))}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {selectedAnalysts.length === 0 && (
+            <p className="text-gray-400 text-center py-4">
+              Seçili kanal yok – tüm tablo gösteriliyor.
+            </p>
+          )}
         </section>
 
         {/* Thematic Analysis Section */}
