@@ -88,13 +88,17 @@ const convertTimestampToSeconds = (timestamp) => {
     .reduce((acc, val, index) => acc + val * Math.pow(60, index), 0);
 };
 
-const formatDate = (dateString) => {
-  if (!dateString) return "Tarih bilgisi yok";
+const formatPublishDate = (dateString) => {
+  if (!dateString) return "Tarih yok";
   try {
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD format
+    return date.toLocaleDateString("tr-TR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   } catch (error) {
-    return "Tarih bilgisi yok";
+    return "Tarih yok";
   }
 };
 
@@ -629,16 +633,30 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                           <h4 className="text-white font-semibold mb-2 line-clamp-2">
                             {video.title}
                           </h4>
-                          <div className="flex items-center space-x-4 text-sm text-gray-400 mb-4">
+                          {video.publishDate && (
+                            <div className="flex items-center space-x-2 mb-2 text-sm text-gray-400">
+                              <span className="text-xs">📅</span>
+                              <span>
+                                {(() => {
+                                  try {
+                                    return formatPublishDate(video.publishDate);
+                                  } catch (error) {
+                                    console.error(
+                                      "Publish date render hatası debug et:",
+                                      error
+                                    );
+                                    return "Tarih yok";
+                                  }
+                                })()}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex items-center space-x-4 text-sm text-gray-400 mb-2">
                             <span className="flex items-center space-x-1">
                               <span>🕐</span>
                               <span>
                                 {video.timestamps.length} zaman damgası
                               </span>
-                            </span>
-                            <span className="flex items-center space-x-1">
-                              <span>📅</span>
-                              <span>{formatDate(video.publishDate)}</span>
                             </span>
                             <span className="flex items-center space-x-1">
                               <span>⚡</span>
