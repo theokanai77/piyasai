@@ -88,6 +88,16 @@ const convertTimestampToSeconds = (timestamp) => {
     .reduce((acc, val, index) => acc + val * Math.pow(60, index), 0);
 };
 
+const formatDate = (dateString) => {
+  if (!dateString) return "Tarih bilgisi yok";
+  try {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD format
+  } catch (error) {
+    return "Tarih bilgisi yok";
+  }
+};
+
 // SentimentCell Component
 const SentimentCell = ({ sentiment }) => {
   const styles = {
@@ -138,7 +148,7 @@ const SummaryCard = ({ summary }) => {
       className="flex flex-col bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 hover:border-cyan-500 hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1"
     >
       <h4 className="text-lg font-bold text-white mb-2">{summary.analyst}</h4>
-      <p className="text-gray-300 flex-grow">"{summary.quote}"</p>
+      <p className="text-gray-300 flex-grow">&ldquo;{summary.quote}&rdquo;</p>
       <div className="text-right text-sm font-mono text-cyan-400 mt-4">
         {summary.timestamp} <LinkIcon />
       </div>
@@ -149,8 +159,7 @@ const SummaryCard = ({ summary }) => {
 export default function FinAlAnalytics({ channels = [], videos = [] }) {
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState("video-summaries");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedExpert, setSelectedExpert] = useState("all");
+  const [searchTerm] = useState("");
   const [selectedChannelId, setSelectedChannelId] = useState("all");
   const [expandedVideos, setExpandedVideos] = useState(new Set());
   const [expandedSummaries, setExpandedSummaries] = useState(new Set());
@@ -189,10 +198,6 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
 
   // Calculate dynamic stats based on filtered videos (for video list)
   const totalVideos = filteredVideos.length;
-  const totalChannels = channels.length;
-  const totalTimestamps = filteredVideos.reduce((total, video) => {
-    return total + (video.timestamps ? video.timestamps.length : 0);
-  }, 0);
 
   // Stats Cards - Always show total numbers from all bulletins (no filtering)
   const statsTotalVideos = videos.length;
@@ -340,14 +345,6 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
               </button>
             </div>
 
-            {/* Badge */}
-            <div className="flex items-center space-x-2 bg-gray-800 rounded-lg px-3 py-2">
-              <span className="text-green-400">📈</span>
-              <span className="text-sm text-white">
-                Bu Hafta: {totalVideos} Video
-              </span>
-            </div>
-
             {/* Followed Channels Status */}
             {session?.user?.id && (
               <div className="flex items-center space-x-2 bg-orange-800 rounded-lg px-3 py-2">
@@ -406,36 +403,6 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                 </div>
               </div>
             </section>
-
-            {/* Search and Filter Bar */}
-            <div className="flex flex-col md:flex-row gap-4 mb-8">
-              <div className="flex-1 relative">
-                <input
-                  type="text"
-                  placeholder="Video başlığı veya uzman adı ara..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 pl-10 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500"
-                />
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                  🔍
-                </span>
-              </div>
-              <div className="flex gap-2">
-                <select
-                  value={selectedExpert}
-                  onChange={(e) => setSelectedExpert(e.target.value)}
-                  className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500"
-                >
-                  <option value="all">Tüm Uzmanlar</option>
-                  {channels.map((channel, index) => (
-                    <option key={index} value={channel.name}>
-                      {channel.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
 
             {/* Followed Channels Filter Status */}
             {session?.user?.id && followedChannels.length > 0 && (
@@ -670,6 +637,10 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                               </span>
                             </span>
                             <span className="flex items-center space-x-1">
+                              <span>📅</span>
+                              <span>{formatDate(video.publishDate)}</span>
+                            </span>
+                            <span className="flex items-center space-x-1">
                               <span>⚡</span>
                               <span>AI analizi</span>
                             </span>
@@ -788,7 +759,6 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
 function VarliklarTab() {
   // State for followed channels
   const [followedChannels, setFollowedChannels] = useState([]);
-  const [loadingFollow, setLoadingFollow] = useState(false);
   const { data: session } = useSession();
 
   // Fetch followed channels on component mount
@@ -805,222 +775,266 @@ function VarliklarTab() {
 
   // Hardcoded report data from tematik.html
   const reportData = {
-    weekOf: "26 Eylül 2025 Haftası",
+    weekOf: "11 Ekim 2025 Haftası",
     bigPictureSummary: {
       summary:
-        "Bu hafta uzmanlar, küresel enflasyon ve resesyon risklerinin devam ettiği bir ortamda, değerli metallerin (altın, gümüş) güvenli liman olarak öne çıktığını belirtiyor. JP Morgan'ın 2029 için 6000$ ons altın tahmini ve fiziksel altın kıtlığı vurgulanırken, Bitcoin için riskler, DXY'de güçlenme ve Borsa İstanbul için tehlike sinyalleri öne çıkıyor. Fed'in faiz indirimlerinin enflasyonu azdırma potansiyeli ve küresel güç oyunları da piyasalardaki belirsizliği artırıyor. Küçük yatırımcıların bilinçli adımlar atması ve doğru alım fırsatlarını beklemesi gerektiği vurgulanıyor.",
+        "Bu hafta uzmanlar, kağıt piyasalarına karşı artan güvensizlik ve fiziki varlıklara (altın, gümüş) olan talebin altını çiziyor. Zayıflayan ABD ekonomik verileri, Fed'in faiz indirimi beklentilerini güçlendirerek piyasalarda volatilite yaratıyor. Altın, kısa vadeli bir düzeltme sürecinde olsa da, jeopolitik riskler ve merkez bankalarının talebiyle uzun vadeli yükseliş trendini koruyor. Türkiye özelinde ise Halkbank davası gibi siyasi riskler ve mevcut ekonomik politikalar, yatırımcıları Borsa İstanbul ve TL konusunda temkinli olmaya itiyor. Genel kanı, 'sistemin kazandığı, yatırımcının dikkatli olması gereken' bir döneme girildiği yönünde.",
       keyThemes: [
-        "Küresel Enflasyon ve Resesyon Riskleri",
-        "Değerli Metallerde Güvenli Liman ve Yükseliş Beklentisi",
-        "Dolar Endeksi (DXY) Güçlenmesi",
-        "Borsa İstanbul ve Kripto Piyasasında Riskler",
-        "Fed Politikalarının Potansiyel Etkileri",
+        "Fiziki Varlıklara Yöneliş",
+        "ABD Verileri ve Fed Beklentileri",
+        "Altında Kısa Vadeli Düzeltme",
+        "Türkiye'ye Özgü Politik Riskler",
+        "Piyasalarda Volatilite Artışı",
       ],
     },
     sentimentAnalysis: [
       {
         asset: "Gram Altın",
-        selcukGecer: "Pozitif",
-        islamMemis: "Pozitif",
         devrimAkyil: "Pozitif",
+        islamMemis: "Negatif",
         artuncKocabalkan: "Pozitif",
         cihatCicek: "Pozitif",
-        elitfinans: "Pozitif",
+        elitFinans: "Pozitif",
+        atillaYesilada: "Pozitif",
       },
       {
         asset: "Gümüş",
-        selcukGecer: "Veri Yok",
-        islamMemis: "Pozitif",
         devrimAkyil: "Pozitif",
+        islamMemis: "Negatif",
         artuncKocabalkan: "Pozitif",
         cihatCicek: "Pozitif",
-        elitfinans: "Pozitif",
+        elitFinans: "Pozitif",
+        atillaYesilada: "Veri Yok",
       },
       {
         asset: "Dolar/TL",
-        selcukGecer: "Pozitif",
+        devrimAkyil: "Pozitif",
         islamMemis: "Pozitif",
-        devrimAkyil: "Veri Yok",
         artuncKocabalkan: "Pozitif",
-        cihatCicek: "Veri Yok",
-        elitfinans: "Pozitif",
+        cihatCicek: "Pozitif",
+        elitFinans: "Nötr",
+        atillaYesilada: "Negatif",
       },
       {
         asset: "BIST 100",
-        selcukGecer: "Negatif",
-        islamMemis: "Negatif",
         devrimAkyil: "Negatif",
+        islamMemis: "Pozitif",
         artuncKocabalkan: "Negatif",
-        cihatCicek: "Veri Yok",
-        elitfinans: "Negatif",
+        cihatCicek: "Nötr",
+        elitFinans: "Pozitif",
+        atillaYesilada: "Veri Yok",
       },
       {
         asset: "Kripto",
-        selcukGecer: "Negatif",
-        islamMemis: "Pozitif",
         devrimAkyil: "Veri Yok",
-        artuncKocabalkan: "Negatif",
-        cihatCicek: "Veri Yok",
-        elitfinans: "Negatif",
+        islamMemis: "Pozitif",
+        artuncKocabalkan: "Pozitif",
+        cihatCicek: "Negatif",
+        elitFinans: "Negatif",
+        atillaYesilada: "Veri Yok",
       },
     ],
     thematicGrouping: [
       {
-        theme: "Makroekonomi ve Küresel Riskler",
+        theme: "Küresel Ekonomi",
         summaries: [
           {
-            analyst: "Selçuk Geçer",
+            analyst: "Bloomberg HT",
             quote:
-              "Yeni atanan Fed üyesi 'faiz indirimleri 2 yıl keskin şekilde sürmeli' diyor; bu yol enflasyonu azdırırsa büyük kriz kapıya dayanır.",
-            videoId: "qJalSqHDLTA",
-            timestamp: "02:50",
+              "Finansal piyasalar için asıl kritik olan konu Fed bilançosudur. Faiz indirimi para basmak demek değildir.",
+            videoId: "zhcsjGZOMmA",
+            timestamp: "11:09",
           },
           {
             analyst: "Artunç Kocabalkan",
             quote:
-              "ABD çekirdek PCE enflasyonu %2.7: Fed'in hedefin üzerinde ama istihdam odaklı bakış.",
-            videoId: "WIwX_L050GU",
-            timestamp: "00:40",
+              "İstihdam verisi sert düştü, resesyon sinyali verdi; Fed'in ekim ayında faiz indirimi olasılığı kesinleşti.",
+            videoId: "XW7UmbWal40",
+            timestamp: "01:31",
           },
           {
-            analyst: "Devrim Akyıl",
+            analyst: "Elit Finans",
             quote:
-              "ABD 10 yıllıkları kritik: 4.13 seviyesi dünya piyasalarının kaderini belirleyebilir.",
-            videoId: "Eox5iri7P-M",
-            timestamp: "17:00",
+              "ABD'de işletmelerin %80'i batık, faiz indirimi balon yaratıyor.",
+            videoId: "jXjqr256nBE",
+            timestamp: "50:11",
           },
           {
             analyst: "Cihat E. Çiçek",
             quote:
-              "ABD'nin yeni gümrük vergileri, küresel korumacılık ve jeopolitik kutuplaşma (ABD/İsrail vs. Rusya/Çin) başlıkları finans akışlarını şekillendiriyor.",
-            videoId: "KqvhQSrt-aU",
-            timestamp: "09:25",
+              "Yangında herkes eline ne geçerse atar nakit sıkışıklığında iyi varlıklar bile satılır.",
+            videoId: "nHn_v2PWnr4",
+            timestamp: "00:00",
+          }, // Timestamp matches "Günün Sözü"
+        ],
+      },
+      {
+        theme: "Türkiye Ekonomisi",
+        summaries: [
+          {
+            analyst: "Devrim Akyıl",
+            quote:
+              "Kur yanlış yerde durduğu sürece her türlü hamle yanlış sonuçlanacak.",
+            videoId: "ZlppMl2hNZk",
+            timestamp: "00:00",
+          }, // Timestamp matches "Kilit Tespit"
+          {
+            analyst: "Atilla Yeşilada",
+            quote: "Hiçbir şey olmaz. TL'den kaçan pişman olur!",
+            videoId: "rQnfjQvxQSE",
+            timestamp: "00:00",
+          }, // Timestamp matches "Günün Sözü"
+          {
+            analyst: "Artunç Kocabalkan",
+            quote:
+              "Halkbank davasının 'Demokles'in kılıcı' gibi Türkiye'nin üzerinde sallandığını söylüyor.",
+            videoId: "CaAukqMymgE",
+            timestamp: "08:36",
           },
           {
-            analyst: "Elit Finans",
+            analyst: "Atilla Yeşilada",
             quote:
-              "Analiz: fiyat tahminlerinin ötesinde küresel güç oyunları yorumu.",
-            videoId: "1AuuvMcN9mY",
-            timestamp: "14:32",
+              "Sanayi göçü: Şirketler Mısır'a taşınıyor - nedenleri düşük maliyet ve Türkiye'deki hukuki belirsizlik.",
+            videoId: "rQnfjQvxQSE",
+            timestamp: "09:58",
           },
         ],
       },
       {
-        theme: "Değerli Metaller: Altın ve Gümüş",
+        theme: "Değerli Metaller",
         summaries: [
           {
             analyst: "Cihat E. Çiçek",
             quote:
-              "JP Morgan'ın '2029'da ons 6.000$' projeksiyonu konuşuluyor; kısa vade 4.200$ eşiği.",
-            videoId: "KqvhQSrt-aU",
-            timestamp: "11:12",
+              "Kağıt bol, altın yok. O yüzden paranızı kağıtta değil, elinizde tutun.",
+            videoId: "OVPW232Eh68",
+            timestamp: "00:00",
+          }, // Timestamp for Günün Sözü
+          {
+            analyst: "Artunç Kocabalkan",
+            quote: "Altındaki her düşüş bir alım fırsatıdır.",
+            videoId: "CaAukqMymgE",
+            timestamp: "00:00",
+          }, // Timestamp for Kilit Tespit
+          {
+            analyst: "İslam Memiş",
+            quote:
+              "2026 hedefleri: ons altın 4.250 dolar, gram altın 6.500 TL.",
+            videoId: "NYSLIYDCubM",
+            timestamp: "02:34",
           },
           {
             analyst: "Elit Finans",
-            quote:
-              "Yıl sonu gram altın hedefi: 5400 ₺. Balinalar ve elit aileler fiziki altın topluyor.",
-            videoId: "1AuuvMcN9mY",
-            timestamp: "07:00",
-          },
-          {
-            analyst: "İslam Memiş",
-            quote:
-              "Gram gümüşte 60 TL görülüyor: yıl hedefi tutunca 'bonus' aşaması.",
-            videoId: "vREda5q9RGQ",
-            timestamp: "13:07",
-          },
-          {
-            analyst: "Devrim Akyıl",
-            quote:
-              "Altın yeni rezerv para olabilir; merkez bankaları artık tahvilden çok altın tutuyor.",
-            videoId: "Eox5iri7P-M",
-            timestamp: "08:18",
-          },
-          {
-            analyst: "Selçuk Geçer",
-            quote:
-              "Altın 4.000-4.500-5.000$ yolu; gram altın 7.000 TL senaryosu.",
-            videoId: "qJalSqHDLTA",
-            timestamp: "07:55",
-          },
-          {
-            analyst: "Devrim Akyıl",
-            quote: "Gümüş formasyonu: cup & handle hedefi 83$.",
-            videoId: "Eox5iri7P-M",
-            timestamp: "07:37",
-          },
-          {
-            analyst: "İslam Memiş",
-            quote:
-              "Ons altın: 3.790 → 3.730-3.750$; kısa vadede kâr satışı bekleniyor.",
-            videoId: "vREda5q9RGQ",
-            timestamp: "10:49",
-          },
-        ],
-      },
-      {
-        theme: "Döviz Piyasası: Dolar ve Euro",
-        summaries: [
-          {
-            analyst: "Selçuk Geçer",
-            quote:
-              "'Doların gerçek değeri 80-120 TL' iddiası; gram altında 12.000 TL projeksiyonu.",
-            videoId: "qJalSqHDLTA",
-            timestamp: "09:40",
-          },
-          {
-            analyst: "Elit Finans",
-            quote: "Dolar adil değer: 42-50 ; ani sıçrama riski.",
-            videoId: "1AuuvMcN9mY",
-            timestamp: "07:24",
-          },
-          {
-            analyst: "İslam Memiş",
-            quote: "DXY 96-98 bandı.",
-            videoId: "vREda5q9RGQ",
-            timestamp: "16:04",
+            quote: "Gram altın yıl sonu hedefi 5400 TL.",
+            videoId: "jXjqr256nBE",
+            timestamp: "56:41",
           },
           {
             analyst: "Cihat E. Çiçek",
             quote:
-              "Endonezya'nın kur müdahalesi; Asya'dan kırılganlık sinyalleri.",
-            videoId: "KqvhQSrt-aU",
-            timestamp: "21:18",
+              "Türkiye'de gümüş stoklarının tükendiğini, rafinerilerde 'yakında stokta' uyarılarının arttığını bildiriyor.",
+            videoId: "OVPW232Eh68",
+            timestamp: "11:16",
+          },
+          {
+            analyst: "Devrim Akyıl",
+            quote: "Gümüşteki hareket çok gerçek; arz-talep dengesizliği var.",
+            videoId: "ZlppMl2hNZk",
+            timestamp: "14:58",
           },
         ],
       },
       {
-        theme: "Yerel Borsa ve Kripto Piyasaları",
+        theme: "Dolar/TL",
         summaries: [
           {
-            analyst: "Elit Finans",
-            quote: "Borsa İstanbul'da tehlike: 236 $ altı riskli.",
-            videoId: "1AuuvMcN9mY",
-            timestamp: "08:47",
+            analyst: "Devrim Akyıl",
+            quote:
+              "Bu kurla devam edilmeyeceği net. Geciktikçe daha yüksek kur gerekir.",
+            videoId: "ZlppMl2hNZk",
+            timestamp: "10:48",
           },
           {
             analyst: "İslam Memiş",
-            quote: "BIST 100 teknik: 11.280-11.350 destek, 11.800 hedef.",
-            videoId: "vREda5q9RGQ",
-            timestamp: "09:49",
+            quote: "Dolar/TL 41,82; yıl sonu hedefi 43,80 - 45 aralığında.",
+            videoId: "NYSLIYDCubM",
+            timestamp: "09:57",
+          },
+          {
+            analyst: "Atilla Yeşilada",
+            quote:
+              "Faiz indirimi eleştirisi: Döviz krizi beklemiyor ama faiz düşüşlerinin enflasyonu azdıracağı uyarısı yapıyor.",
+            videoId: "rQnfjQvxQSE",
+            timestamp: "03:57",
+          },
+        ],
+      },
+      {
+        theme: "BIST100",
+        summaries: [
+          {
+            analyst: "Artunç Kocabalkan",
+            quote: "Borsadan bir cacık olmaz.",
+            videoId: "CaAukqMymgE",
+            timestamp: "05:52",
+          },
+          {
+            analyst: "Devrim Akyıl",
+            quote:
+              "BIST'te 10.844 altı riskli bölge; döviz rahatlamazsa baskı sürecek.",
+            videoId: "ZlppMl2hNZk",
+            timestamp: "16:37",
+          },
+          {
+            analyst: "İslam Memiş",
+            quote: "Borsa İstanbul 10.746; ucuz ve 11.800 hedefi korunuyor.",
+            videoId: "NYSLIYDCubM",
+            timestamp: "10:19",
+          },
+        ],
+      },
+      {
+        theme: "Kripto",
+        summaries: [
+          {
+            analyst: "İslam Memiş",
+            quote:
+              "Bitcoin pozisyonu yıl sonuna kadar korunacak; fiyat hedefi 135.000 dolar.",
+            videoId: "NYSLIYDCubM",
+            timestamp: "03:35",
+          },
+          {
+            analyst: "Elit Finans",
+            quote:
+              "Bitcoin'de negatif uyumsuzluk tespiti - büyük oyuncular satıyor.",
+            videoId: "jXjqr256nBE",
+            timestamp: "12:27",
           },
           {
             analyst: "Artunç Kocabalkan",
-            quote: "Kripto: Bitcoin için kritik seviyeler 110.700-115.000.",
-            videoId: "WIwX_L050GU",
-            timestamp: "09:14",
+            quote:
+              "Bitcoin 117.500 üzerine çıkarsa tüm zamanların zirvesi hareketi başlayabilir.",
+            videoId: "XW7UmbWal40",
+            timestamp: "13:35",
+          },
+        ],
+      },
+      {
+        theme: "Yabancı Borsalar",
+        summaries: [
+          {
+            analyst: "Cihat E. Çiçek",
+            quote:
+              "Nasdaq -%3,5; krediyle taşınan pozisyonların çözülmesi ve teminat baskısı.",
+            videoId: "nHn_v2PWnr4",
+            timestamp: "10:00",
           },
           {
-            analyst: "Elit Finans",
-            quote: "Bitcoin 112.000 $ üzerinde kalırsa 'yıkım' uyarısı.",
-            videoId: "1AuuvMcN9mY",
-            timestamp: "11:02",
-          },
-          {
-            analyst: "İslam Memiş",
-            quote: "Bitcoin: 112.5k$ altı alım fırsatı: 117.5-118.5k$ hedef.",
-            videoId: "vREda5q9RGQ",
-            timestamp: "13:50",
+            analyst: "Bloomberg HT",
+            quote:
+              "Avrupa'da otomotiv hisseleri sert düşüşte; Ferrari rehberlik hayal kırıklığı sonrası negatif ayrışıyor.",
+            videoId: "zhcsjGZOMmA",
+            timestamp: "04:21",
           },
         ],
       },
@@ -1095,7 +1109,7 @@ function VarliklarTab() {
             <div className="flex items-center mb-4">
               <LightbulbIcon />
               <h2 className="text-3xl font-bold ml-4 text-yellow-300">
-                Haftanın "Büyük Resmi"
+                Haftanın &ldquo;Büyük Resmi&rdquo;
               </h2>
             </div>
             <p className="text-lg text-gray-300 mb-6">
