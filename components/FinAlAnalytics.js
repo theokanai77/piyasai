@@ -1066,7 +1066,8 @@ function VarliklarTab() {
     devrimAkyil: "Devrim Akyıl",
     artuncKocabalkan: "Artunç Kocabalkan",
     cihatCicek: "Cihat E. Çiçek",
-    elitfinans: "Elit Finans",
+    elitFinans: "Elit Finans",
+    atillaYesilada: "Atilla Yeşilada",
   };
 
   // Filter sentiment analysis based on followed channels
@@ -1157,14 +1158,6 @@ function VarliklarTab() {
               <span className="text-sm text-gray-400">
                 Seçili {selectedAnalysts.length} analist gösteriliyor
               </span>
-              <button
-                onClick={() => {
-                  /* Tümünü göster logic, ama şimdilik pass */
-                }}
-                className="text-blue-400 hover:underline text-sm"
-              >
-                Tümünü Göster
-              </button>
             </div>
             <div className="overflow-x-auto bg-gray-800 rounded-lg shadow-md border border-gray-700">
               <table className="min-w-full divide-y divide-gray-700">
@@ -1224,14 +1217,6 @@ function VarliklarTab() {
                 )}{" "}
                 içerik)
               </span>
-              <button
-                onClick={() => {
-                  /* Tümünü göster, pass */
-                }}
-                className="text-blue-400 hover:underline text-sm"
-              >
-                Tümünü Göster
-              </button>
             </div>
             <div className="space-y-10">
               {filteredThematicGroups.map((group) => (
