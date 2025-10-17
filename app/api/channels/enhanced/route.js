@@ -1,6 +1,7 @@
 import connectMongo from "@/libs/mongoose";
 import Bulletin from "@/models/Bulletin";
 
+// Force dynamic rendering to prevent Vercel static generation errors
 export const dynamic = "force-dynamic";
 
 // Enhanced avatar color mapping with more channels
