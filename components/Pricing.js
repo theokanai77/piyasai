@@ -1,18 +1,19 @@
 import config from "@/config";
-import ButtonCheckout from "./ButtonCheckout";
+import ButtonSignin from "./ButtonSignin";
 
 // <Pricing/> displays the pricing plans for your app
 // It's your Stripe config in config.js.stripe.plans[] that will be used to display the plans
-// <ButtonCheckout /> renders a button that will redirect the user to Stripe checkout called the /api/stripe/create-checkout API endpoint with the correct priceId
+// <ButtonSignin /> renders a button that will redirect the user to sign in
 
 const Pricing = () => {
   return (
     <section className="bg-base-200 overflow-hidden" id="pricing">
       <div className="py-24 px-8 max-w-5xl mx-auto">
         <div className="flex flex-col text-center w-full mb-20">
-          <p className="font-medium text-primary mb-8">Pricing</p>
+          <p className="font-medium text-primary mb-8">Üyelik Seçenekleri</p>
           <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
-            Save hours of repetitive code and ship faster!
+            Her hafta tüm dünya gündemine ve yerli/yabancı ekonomi haberlerine
+            hızlıca ulaşın!
           </h2>
         </div>
 
@@ -24,7 +25,7 @@ const Pricing = () => {
                   <span
                     className={`badge text-xs text-primary-content font-semibold border-0 bg-primary`}
                   >
-                    POPULAR
+                    EN ÇOK SATAN
                   </span>
                 </div>
               )}
@@ -52,17 +53,17 @@ const Pricing = () => {
                       <p className="relative">
                         <span className="absolute bg-base-content h-[1.5px] inset-x-0 top-[53%]"></span>
                         <span className="text-base-content/80">
-                          ${plan.priceAnchor}
+                          TL {plan.priceAnchor}
                         </span>
                       </p>
                     </div>
                   )}
                   <p className={`text-5xl tracking-tight font-extrabold`}>
-                    ${plan.price}
+                    {plan.price}
                   </p>
                   <div className="flex flex-col justify-end mb-[4px]">
                     <p className="text-xs text-base-content/60 uppercase font-semibold">
-                      USD
+                      TL {plan.price}
                     </p>
                   </div>
                 </div>
@@ -89,10 +90,13 @@ const Pricing = () => {
                   </ul>
                 )}
                 <div className="space-y-2">
-                  <ButtonCheckout priceId={plan.priceId} />
+                  <ButtonSignin
+                    priceId={plan.priceId}
+                    extraStyle="btn-primary btn-wide"
+                  />
 
                   <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
-                    Pay once. Access forever.
+                    Tamamiyle Ücretsiz Erişim. Kredi Kartı Gerektirmez.
                   </p>
                 </div>
               </div>

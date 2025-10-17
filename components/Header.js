@@ -11,12 +11,9 @@ import config from "@/config";
 const links = [
   {
     href: "/#pricing",
-    label: "Fiyatlar",
+    label: "Ücretsiz Üyelik",
   },
-  {
-    href: "/#testimonials",
-    label: "Yorumlar",
-  },
+
   {
     href: "/#faq",
     label: "S.S.S",

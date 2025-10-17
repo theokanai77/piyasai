@@ -7,22 +7,31 @@ import { useRef, useState } from "react";
 
 const faqList = [
   {
-    question: "What do I get exactly?",
-    answer: <div className="space-y-2 leading-relaxed">Loreum Ipseum</div>,
-  },
-  {
-    question: "Can I get a refund?",
+    question: " Üyelik Ücretsiz Mi?",
     answer: (
-      <p>
-        Yes! You can request a refund within 7 days of your purchase. Reach out
-        by email.
-      </p>
+      <div className="space-y-2 leading-relaxed">
+        Evet , üyelik şimdilik tamamiyle ücretsizdir. Kredi Kartı Gerektirmez.
+      </div>
     ),
   },
   {
-    question: "I have another question",
+    question: "Tam Erişimli Üyelik İçin Ne Yapmam Gerekiyor?",
     answer: (
-      <div className="space-y-2 leading-relaxed">Cool, contact us by email</div>
+      <div className="space-y-2 leading-relaxed">
+        Önce piyasai.com sitesinden kayıt yapın.Sonra X @fitkayme hesabını takip
+        edin, DM üzerinden emailinizi gönderin.
+      </div>
+    ),
+  },
+  {
+    question:
+      " Başka Youtube Kanallarını Piyasai Üzerinden Takip Edebilir Miyim?",
+    answer: (
+      <div className="space-y-2 leading-relaxed">
+        Tam erişimli üyeler X üzerinden DM ile istedikleri kanalları
+        bildirebilirler, Piyasai ekibimiz ise bu kanalları piyasai.com sitesine
+        ekleyecektir.
+      </div>
     ),
   },
 ];
@@ -92,9 +101,9 @@ const FAQ = () => {
     <section className="bg-base-200" id="faq">
       <div className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
         <div className="flex flex-col text-left basis-1/2">
-          <p className="inline-block font-semibold text-primary mb-4">FAQ</p>
+          <p className="inline-block font-semibold text-primary mb-4">S.S.S</p>
           <p className="sm:text-4xl text-3xl font-extrabold text-base-content">
-            Frequently Asked Questions
+            Sıkça Sorulan Sorular
           </p>
         </div>
 

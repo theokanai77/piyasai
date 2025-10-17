@@ -166,7 +166,9 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
   const [searchTerm] = useState("");
   const [selectedChannelId, setSelectedChannelId] = useState("all");
   const [expandedVideos, setExpandedVideos] = useState(new Set());
-  const [expandedSummaries, setExpandedSummaries] = useState(new Set());
+  const [expandedSummaries, setExpandedSummaries] = useState(() => {
+    return new Set(videos.map((_, index) => index));
+  });
   const [followedChannels, setFollowedChannels] = useState([]);
   const [loadingFollow, setLoadingFollow] = useState(false);
 
@@ -318,7 +320,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                   Piyasai Analytics
                 </h1>
                 <p className="text-sm text-gray-400">
-                  Uzman Görüşleri & Analiz
+                  Küçük Yatırımcı Dostu Platform
                 </p>
               </div>
             </div>
@@ -585,8 +587,8 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                           onClick={() => handleChannelClick(channel.name)}
                           className="w-full mt-2 cursor-pointer"
                         >
-                          <div className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
-                            Videoları Gör
+                          <div className="text-sm text-gray-500 hover:text-gray-400 transition-colors">
+                            Videoları İçin Tıkla
                           </div>
                         </div>
                       </div>

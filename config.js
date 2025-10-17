@@ -23,20 +23,21 @@ const config = {
             ? "price_1Niyy5AxyNprDp7iZIqEyD2h"
             : "price_456",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Starter",
+        name: "Ücretsiz 1 Aylık Abonelik",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "Perfect for small projects",
+        description:
+          "Her an tüm dünya gündemine ve yerli/yabancı ekonomi haberlerine hızlıca ulaşın!",
         // The price you want to display, the one user will be charged on Stripe.
-        price: 79,
+        price: 0,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
-        priceAnchor: 99,
+        priceAnchor: 39,
         features: [
           {
-            name: "NextJS boilerplate",
+            name: "Piyasai Kısıtlı Erişim",
           },
-          { name: "User oauth" },
-          { name: "Database" },
-          { name: "Emails" },
+          { name: "Kanalları Takip Et" },
+          { name: "Haftalık Finans Raporunu Okuyun" },
+          { name: "Özetleri Takip Et" },
         ],
       },
       {
@@ -46,19 +47,20 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_1O5KtcAxyNprDp7iftKnrrpw"
             : "price_456",
-        name: "Advanced",
-        description: "You need more power",
-        price: 99,
-        priceAnchor: 149,
+        name: "Ücretsiz 6 Aylık Abonelik",
+        description:
+          "X @fitkayme hesabını takip ederek, DM 'den emailini yolla. 6 ay boyunca ücretsiz erişim.",
+        price: 0,
+        priceAnchor: 289,
         features: [
           {
-            name: "NextJS boilerplate",
+            name: "Piyasai Tam Erişim",
           },
-          { name: "User oauth" },
-          { name: "Database" },
-          { name: "Emails" },
-          { name: "1 year of updates" },
-          { name: "24/7 support" },
+          { name: "6 Aylık Ücretsiz Erişim" },
+          { name: "Haftalık Finans Raporunu Okuyun" },
+          { name: "Özetleri Takip Et" },
+          { name: "Kanalları Takip Et" },
+          { name: "Twitter'ı Takip Et" },
         ],
       },
     ],

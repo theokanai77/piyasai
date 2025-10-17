@@ -20,7 +20,6 @@ export default function Home() {
         <FeaturesAccordion />
         <Pricing />
         <FAQ />
-        <CTA />
       </main>
       <Footer />
     </>
