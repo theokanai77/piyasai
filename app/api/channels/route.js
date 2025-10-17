@@ -1,6 +1,8 @@
 import connectMongo from "@/libs/mongoose";
 import Bulletin from "@/models/Bulletin";
 
+export const dynamic = "force-dynamic";
+
 // Map channel names to avatar colors
 const getAvatarColor = (channelName) => {
   const colorMap = {

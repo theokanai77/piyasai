@@ -4,6 +4,8 @@ import { authOptions } from "@/libs/next-auth";
 import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
 
+export const dynamic = "force-dynamic";
+
 // GET method - Retrieve user's followed channels
 export async function GET(request) {
   try {

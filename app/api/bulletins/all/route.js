@@ -1,6 +1,8 @@
 import connectMongo from "@/libs/mongoose";
 import Bulletin from "@/models/Bulletin";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     // Connect to MongoDB
