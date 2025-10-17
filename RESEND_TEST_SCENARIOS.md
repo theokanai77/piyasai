@@ -18,7 +18,7 @@ MONGODB_URI=your_mongodb_connection_string
 
 # Resend Configuration
 RESEND_API_KEY=your_resend_api_key_here
-EMAIL_FROM=noreply@resend.kaplanokan.com
+EMAIL_FROM=noreply@resend.piyasai.com
 ```
 
 ## 🧪 Test Scenarios
@@ -97,7 +97,7 @@ EMAIL_FROM=noreply@resend.kaplanokan.com
 2. Go to [Resend Dashboard](https://resend.com/dashboard)
 3. Navigate to "Emails" section
 4. Check for sent emails with:
-   - From: `noreply@resend.kaplanokan.com`
+   - From: `noreply@resend.piyasai.com`
    - To: Test email address
    - Subject: Contains "Sign in" or "Login"
 5. Verify email delivery status
@@ -146,7 +146,7 @@ curl -X POST 'https://api.resend.com/emails' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
-    "from": "noreply@resend.kaplanokan.com",
+    "from": "noreply@resend.piyasai.com",
     "to": ["test@example.com"],
     "subject": "Test Email",
     "html": "<p>Test email from Resend</p>"

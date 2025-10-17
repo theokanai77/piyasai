@@ -6,7 +6,7 @@ const config = {
   // REQUIRED: a short description of your app for SEO tags (can be overwritten)
   appDescription: "Piyasai, finansal piyasaları analiz eden bir platform.",
   // REQUIRED (no https://, not trialing slash at the end, just the naked domain)
-  domainName: "kaplanokan.com",
+  domainName: "piyasai.com",
   crisp: {
     // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (mailgun.supportEmail) otherwise customer support won't work.
     id: "",
@@ -86,11 +86,11 @@ const config = {
   resend: {
     // Resend configuration for email sending
     // REQUIRED — Email 'From' field to be used when sending magic login links
-    fromNoReply: `Piyasai <noreply@resend.kaplanokan.com>`,
+    fromNoReply: `Piyasai <noreply@resend.piyasai.com>`,
     // REQUIRED — Email 'From' field to be used when sending other emails, like abandoned carts, updates etc..
-    fromAdmin: `Okan at Piyasai <okan@resend.kaplanokan.com>`,
+    fromAdmin: `Okan at Piyasai <okan@resend.piyasai.com>`,
     // Email shown to customer if need support. Leave empty if not needed => if empty, set up Crisp above, otherwise you won't be able to offer customer support."
-    supportEmail: "okan@resend.kaplanokan.com",
+    supportEmail: "okan@resend.piyasai.com",
     // When someone replies to supportEmail sent by the app, forward it to the email below (otherwise it's lost). If you set supportEmail to empty, this will be ignored.
     forwardRepliesTo: "okankaplan@gmail.com",
   },

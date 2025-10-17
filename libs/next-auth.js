@@ -35,7 +35,7 @@ export const authOptions = {
                 pass: process.env.RESEND_API_KEY,
               },
             },
-            from: process.env.EMAIL_FROM || "noreply@resend.kaplanokan.com",
+            from: process.env.EMAIL_FROM || "noreply@resend.piyasai.com",
           }),
         ]
       : []),

@@ -118,7 +118,7 @@ async function fetchChannels() {
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
       (process.env.NODE_ENV === "production"
-        ? "https://www.kaplanokan.com"
+        ? "https://www.piyasai.com"
         : "http://localhost:3000");
     const response = await fetch(`${baseUrl}/api/channels`, {
       cache: "no-store", // Ensure fresh data
@@ -162,7 +162,7 @@ async function fetchBulletins() {
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
       (process.env.NODE_ENV === "production"
-        ? "https://www.kaplanokan.com"
+        ? "https://www.piyasai.com"
         : "http://localhost:3000");
     const response = await fetch(`${baseUrl}/api/bulletins/all`, {
       cache: "no-store", // Ensure fresh data

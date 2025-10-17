@@ -56,7 +56,7 @@ EmailProvider({
       pass: process.env.RESEND_API_KEY,
     },
   },
-  from: process.env.EMAIL_FROM || "noreply@resend.kaplanokan.com",
+  from: process.env.EMAIL_FROM || "noreply@resend.piyasai.com",
 });
 ```
 
@@ -65,7 +65,7 @@ EmailProvider({
 ```env
 # Required for Resend integration
 RESEND_API_KEY=your_resend_api_key_here
-EMAIL_FROM=noreply@resend.kaplanokan.com
+EMAIL_FROM=noreply@resend.piyasai.com
 
 # NextAuth configuration
 NEXTAUTH_SECRET=your_nextauth_secret_here
@@ -127,7 +127,7 @@ echo $NEXTAUTH_SECRET
 curl -X POST 'https://api.resend.com/emails' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
-  -d '{"from": "noreply@resend.kaplanokan.com", "to": ["test@example.com"], "subject": "Test", "html": "<p>Test</p>"}'
+  -d '{"from": "noreply@resend.piyasai.com", "to": ["test@example.com"], "subject": "Test", "html": "<p>Test</p>"}'
 ```
 
 ## 📊 Current Status
