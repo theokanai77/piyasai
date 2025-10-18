@@ -7,7 +7,7 @@ import User from "@/models/User";
 export const dynamic = "force-dynamic";
 
 // GET method - Retrieve user's followed channels
-export async function GET(request) {
+export async function GET() {
   try {
     // Connect to MongoDB
     await connectMongo();

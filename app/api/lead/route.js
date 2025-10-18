@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import connectMongo from "@/libs/mongoose";
-import Lead from "@/models/Lead";
 
 export const dynamic = "force-dynamic";
 

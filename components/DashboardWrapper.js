@@ -41,7 +41,7 @@ export default function DashboardWrapper({ children }) {
               <div className="flex-1">
                 <h4 className="font-medium">Access Denied</h4>
                 <p className="text-sm mt-1 opacity-90">
-                  You don't have admin privileges to access that page.
+                  You don&apos;t have admin privileges to access that page.
                 </p>
               </div>
               <button
