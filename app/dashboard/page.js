@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/libs/next-auth";
 import FinAlAnalytics from "@/components/FinAlAnalytics";
+import DashboardWrapper from "@/components/DashboardWrapper";
 import User from "@/models/User";
 import connectMongo from "@/libs/mongoose";
 
@@ -200,7 +201,7 @@ async function fetchBulletins() {
     console.error("Error fetching bulletins:", error);
 
     // Apply fallback filtering for MVP
-    const filteredFallback = fallbackVideos.filter((v) => true); // Show all for now
+    const filteredFallback = fallbackVideos.filter(() => true); // Show all for now
     return filteredFallback;
   }
 }
@@ -225,8 +226,10 @@ async function DashboardContent() {
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Dashboard() {
   return (
-    <Suspense fallback={<DashboardLoading />}>
-      <DashboardContent />
-    </Suspense>
+    <DashboardWrapper>
+      <Suspense fallback={<DashboardLoading />}>
+        <DashboardContent />
+      </Suspense>
+    </DashboardWrapper>
   );
 }

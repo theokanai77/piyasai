@@ -1,11 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // 'success' or 'error'
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  // Client-side authorization check to prevent UI flashing
+  useEffect(() => {
+    if (status === "loading") return; // Still loading
+
+    if (status === "unauthenticated") {
+      console.log(
+        "🔐 Client-side: User not authenticated, redirecting to login"
+      );
+      router.push("/api/auth/signin");
+      return;
+    }
+
+    if (session && !session.user?.isAdmin) {
+      console.log("🚫 Client-side: User not admin, redirecting to dashboard", {
+        email: session.user?.email,
+        isAdmin: session.user?.isAdmin,
+      });
+      router.push("/dashboard?message=access_denied");
+      return;
+    }
+
+    if (session?.user?.isAdmin) {
+      console.log("✅ Client-side: Admin access confirmed", {
+        email: session.user?.email,
+        isAdmin: session.user?.isAdmin,
+      });
+      setIsAuthorized(true);
+    }
+  }, [session, status, router]);
 
   const handleSeed = async () => {
     setIsLoading(true);
@@ -45,6 +80,20 @@ export default function AdminPage() {
     setMessage("");
     setMessageType("");
   };
+
+  // Show loading state while checking authorization
+  if (status === "loading" || !isAuthorized) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">
+            {status === "loading" ? "Loading..." : "Checking authorization..."}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">

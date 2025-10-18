@@ -36,6 +36,11 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Admin access control - if true, user has full admin access
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     // Array of followed channel names (e.g., ['Devrim Akyıl', 'İslam Memiş'])
     followedChannels: {
       type: [String],
