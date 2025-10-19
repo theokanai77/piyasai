@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 
 const errorMessages = {
@@ -12,7 +13,7 @@ const errorMessages = {
   Default: "Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.",
 };
 
-export default function AuthError() {
+function AuthErrorForm() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const errorMessage = errorMessages[error] || errorMessages.Default;
@@ -82,5 +83,22 @@ export default function AuthError() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AuthError() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-2 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Yükleniyor...</p>
+          </div>
+        </div>
+      }
+    >
+      <AuthErrorForm />
+    </Suspense>
   );
 }
