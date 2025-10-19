@@ -25,19 +25,16 @@ export default function AdminPage() {
     }
 
     if (session && !session.user?.isAdmin) {
-      console.log("🚫 Client-side: User not admin, redirecting to dashboard", {
-        email: session.user?.email,
-        isAdmin: session.user?.isAdmin,
-      });
+      console.log(
+        "🚫 Client-side: User not admin, redirecting to dashboard",
+        {}
+      );
       router.push("/dashboard?message=access_denied");
       return;
     }
 
     if (session?.user?.isAdmin) {
-      console.log("✅ Client-side: Admin access confirmed", {
-        email: session.user?.email,
-        isAdmin: session.user?.isAdmin,
-      });
+      console.log("✅ Client-side: Admin access confirmed", {});
       setIsAuthorized(true);
     }
   }, [session, status, router]);

@@ -14,7 +14,7 @@ const features = [
   {
     title: "Youtube Kanallarını Takip Et",
     description:
-      "Sevdiğiniz Youtube kanallarını takip ederek, yatırım fırsatlarını dakikalariçinde yakalayın",
+      "Sevdiğiniz Youtube kanallarını takip ederek, dünyada ve Türkiye'deki ekonomik gündemi dakikalar içinde yakalayın",
     type: "image",
     path: "/piyasai.png",
     format: "video/webm",
@@ -37,7 +37,7 @@ const features = [
   {
     title: "Haftalık Finans Raporunu Okuyun",
     description:
-      "Haftalık finans raporunu okuyarak, tüm finansal varlıklar için ilgili youtube videolarının ilgili yerlerini görüntüleyin",
+      "Haftalık finans raporunu okuyarak, tüm finansal varlıklar için ilgili youtube videolarının ilgili dakikalarını görüntüleyin",
     type: "image",
     path: "/piyasai.png",
     alt: "A computer",
@@ -61,7 +61,7 @@ const features = [
   {
     title: "Yatırım Fırsatlarını Yakalayın",
     description:
-      "Bist100, Dolar/TL, Altın/Gümüş, Yabancı Borsalar, Kripto piyasalarının fiyatlarını takip ederek, yatırım fırsatlarını dakikalar içinde yakalayın",
+      "Bist100, Dolar/TL, Altın/Gümüş, Yabancı Borsalar, Kripto piyasalarını takip ederek, yatırım fırsatlarını dakikalar içinde yakalayın",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +82,7 @@ const features = [
   {
     title: "Gündemi Takip Edin",
     description:
-      "Gündemi takip ederek, makro ekonomik verileri ve piyasa duyurularını takip ederek, habersiz kalmayın",
+      "Makro ekonomik verileri ve piyasa duyurularını takip edin, habersiz kalmayın",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -198,7 +198,7 @@ const FeaturesAccordion = () => {
         <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight mb-12 md:mb-24">
           Dakikalar içinde tüm ekonomik verileri, piyasa haberlerini takip edin
           <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
-            ve para kazanın!
+            ve fırsatları kaçırmayın!
           </span>
         </h2>
         <div className=" flex flex-col md:flex-row gap-12 md:gap-24">

@@ -46,6 +46,11 @@ const userSchema = mongoose.Schema(
       type: [String],
       default: [],
     },
+    // X (Twitter) verification status
+    xVerified: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

@@ -49,23 +49,26 @@ export const authOptions = {
 
   callbacks: {
     jwt: async ({ token, user }) => {
-      // On first sign-in, add isAdmin from user object
+      // On first sign-in, add isAdmin and xVerified from user object
       if (user) {
         token.isAdmin = user.isAdmin || false;
+        token.xVerified = user.xVerified || false;
       }
 
-      // On subsequent calls, query the database for current isAdmin status
+      // On subsequent calls, query the database for current isAdmin and xVerified status
       if (token.sub) {
         try {
           await connectMongoose();
           const dbUser = await User.findById(token.sub);
           if (dbUser) {
             token.isAdmin = dbUser.isAdmin || false;
+            token.xVerified = dbUser.xVerified || false;
           }
         } catch (error) {
-          console.error("❌ Error fetching user isAdmin status:", error);
+          console.error("❌ Error fetching user status:", error);
           // Fallback to false if there's an error
           token.isAdmin = false;
+          token.xVerified = false;
         }
       }
 
@@ -75,6 +78,7 @@ export const authOptions = {
       if (session?.user) {
         session.user.id = token.sub;
         session.user.isAdmin = token.isAdmin || false;
+        session.user.xVerified = token.xVerified || false;
       }
       return session;
     },

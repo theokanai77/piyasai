@@ -49,6 +49,7 @@ components/
 │   ├── Header.js                   # Site header
 │   ├── Footer.js                   # Site footer
 │   ├── LayoutClient.js             # Client-side layout wrapper
+│   ├── DashboardWrapper.js         # Dashboard wrapper with access denied messages
 │   └── Hero.js                     # Landing page hero section
 ├── 📊 Feature Components/
 │   ├── FeaturesAccordion.js        # Feature accordion
@@ -99,6 +100,8 @@ app/
 ├── 📄 Legal Pages/
 │   ├── privacy-policy/page.js      # Privacy policy
 │   └── tos/page.js                 # Terms of service
+├── 🚫 Verification/
+│   └── verification-denied/page.js # X verification required page
 └── 🔌 API Routes/
     ├── auth/[...nextauth]/route.js # Authentication
     ├── bulletins/
@@ -112,6 +115,7 @@ app/
     │   ├── enhanced/route.js       # Enhanced channel data
     │   └── test/route.js           # Test channel endpoint
     ├── lead/route.js               # Lead management
+    ├── follow-channels/route.js    # Follow/unfollow channels
     ├── seed/
     │   ├── route.js                # Alternative seed endpoint
     │   └── test/route.js           # Seed test endpoint
@@ -125,7 +129,7 @@ app/
 ```
 models/
 ├── 📊 Bulletin.js                  # Main video/bulletin model
-├── 👤 User.js                      # User model
+├── 👤 User.js                      # User model (with isAdmin, xVerified, followedChannels)
 ├── 📝 Lead.js                      # Lead/contact model
 └── plugins/
     └── toJSON.js                   # Mongoose plugin
@@ -207,27 +211,34 @@ public/
 
 ### 📊 **Dashboard Features**
 
-- **Dynamic Stats**: Video count, channel count, timestamp count
-- **Channel Filtering**: Filter videos by channel with clickable cards
+- **Dynamic Stats**: Video count, channel count, timestamp count (always shows total numbers)
+- **Channel Filtering**: Filter videos by channel with clickable cards (8-column responsive grid)
+- **Follow System**: Users can follow/unfollow channels with heart toggle buttons
 - **Search Functionality**: Search videos by title or channel
 - **Expandable Content**:
   - Timestamp expansion (show all timestamps)
   - AI Summary expansion (show detailed summaries)
 - **YouTube Integration**: Direct links to videos with timestamps
+- **Responsive Design**: Optimized for mobile and desktop viewing
 
 ### 🔐 **Admin Features**
 
+- **Role-Based Access Control**: Admin-only access with `isAdmin` field
 - **Data Seeding**: Load sample data into database
-- **Authentication**: Protected admin routes
+- **Authentication**: Protected admin routes with server-side validation
 - **Error Handling**: Comprehensive error messages
 - **Loading States**: User-friendly loading indicators
+- **Access Denied Messages**: Toast notifications for unauthorized access
 
 ### 🗄️ **Database Features**
 
 - **Bulletin Model**: Complete video data with timestamps
+- **User Model**: Enhanced with `isAdmin`, `xVerified`, and `followedChannels` fields
+- **Follow System**: Users can follow/unfollow channels with persistent storage
 - **Upsert Operations**: Prevent duplicate entries
 - **Validation**: Timestamp format validation (HH:MM)
 - **Aggregation**: Channel statistics and video counts
+- **Backfill Support**: Database migration utilities for new fields
 
 ---
 
@@ -245,6 +256,11 @@ public/
 
 - `GET /api/channels` - Get channel list with video counts
 - `GET /api/channels/enhanced` - Enhanced channel data
+
+### 👤 **User Management API**
+
+- `GET /api/follow-channels` - Get user's followed channels
+- `POST /api/follow-channels` - Follow/unfollow channels
 
 ### 🔐 **Authentication API**
 
@@ -279,6 +295,11 @@ public/
 MONGODB_URI=your_mongodb_connection_string
 NEXTAUTH_SECRET=your_nextauth_secret
 NEXTAUTH_URL=your_app_url
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+RESEND_API_KEY=your_resend_email_api_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 ```
 
 ---
@@ -303,11 +324,14 @@ NEXTAUTH_URL=your_app_url
 
 ## 🔒 **Security Features**
 
-### 🔐 **Authentication**
+### 🔐 **Authentication & Access Control**
 
-- **NextAuth.js**: Industry-standard authentication
-- **Protected Routes**: Admin and dashboard protection
-- **Session Management**: Secure session handling
+- **NextAuth.js**: Industry-standard authentication with Google OAuth
+- **Role-Based Access Control**: Admin access with `isAdmin` field
+- **Protected Routes**: Admin and dashboard protection with server-side validation
+- **Session Management**: Secure session handling with JWT tokens
+- **X Verification**: Optional X (Twitter) verification system
+- **Follow System**: User channel following with persistent storage
 
 ### 🛡️ **Data Protection**
 
@@ -374,6 +398,38 @@ NEXTAUTH_URL=your_app_url
 
 ---
 
-_Last Updated: January 2025_
-_Version: 1.0.0_
+## 🆕 **Recent Updates**
 
+### 📅 **January 2025**
+
+#### ✅ **User Management & Access Control**
+
+- **Admin Access Control**: Implemented `isAdmin` field with role-based access
+- **X Verification System**: Added `xVerified` field with default value `true`
+- **Follow System**: Users can follow/unfollow channels with heart toggle buttons
+- **Access Denied Handling**: Toast notifications and verification denied page
+
+#### 🎨 **UI/UX Improvements**
+
+- **Channel Cards**: Updated to 8-column responsive grid with smaller, more compact cards
+- **Stats Cards**: Fixed to always show total numbers regardless of user's followed channels
+- **Dashboard Wrapper**: Added access denied message handling
+- **Verification Page**: Created `/verification-denied` page for non-verified users
+
+#### 🔧 **Technical Enhancements**
+
+- **Database Schema**: Enhanced User model with new fields and proper defaults
+- **API Routes**: Added follow-channels endpoint for user channel management
+- **Performance**: Optimized stats calculations with `useMemo` hooks
+- **Error Handling**: Improved error messages and user feedback
+
+#### 🛠️ **Build & Deployment**
+
+- **Vercel Fixes**: Resolved build errors and linting issues
+- **Environment Variables**: Updated configuration for all services
+- **Code Quality**: Removed unused imports and fixed ESLint warnings
+
+---
+
+_Last Updated: January 2025_
+_Version: 1.2.0_

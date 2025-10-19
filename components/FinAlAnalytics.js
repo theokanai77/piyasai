@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // Icon Components
 const BullIcon = () => (
@@ -162,6 +163,7 @@ const SummaryCard = ({ summary }) => {
 
 export default function FinAlAnalytics({ channels = [], videos = [] }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("video-summaries");
   const [searchTerm] = useState("");
   const [selectedChannelId, setSelectedChannelId] = useState("all");
@@ -171,6 +173,16 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
   });
   const [followedChannels, setFollowedChannels] = useState([]);
   const [loadingFollow, setLoadingFollow] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+
+  // Client-side check for xVerified - supplements server-side protection
+  useEffect(() => {
+    if (session === undefined) return;
+    setIsChecking(false);
+    if (session?.user?.xVerified === false) {
+      router.push("/verification-denied");
+    }
+  }, [session]);
 
   // Fetch followed channels when user is authenticated
   useEffect(() => {
@@ -307,6 +319,13 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
     }
   };
 
+  if (isChecking)
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <p className="text-white">Checking verification...</p>
+      </div>
+    );
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header Bar */}
@@ -350,7 +369,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                 }`}
               >
                 <span className="mr-2">💰</span>
-                Varlıklar
+                Haftalık Rapor
               </button>
             </div>
 
@@ -383,6 +402,12 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                     dakika dakika özetlerle
                   </span>{" "}
                   sunan platform
+                </p>
+                <p className="text-xs text-gray-300 max-w-3xl mx-auto">
+                  Bu platformda bulunan bilgiler yatırım danışmanlığı kapsamında
+                  olmadığı gibi yatırım tavsiyesi değildir. Yapılan özetler
+                  bireysel görüşlerimdir. Videoların tamamını izlemeniz
+                  önerilir.
                 </p>
               </div>
 
@@ -442,24 +467,24 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
               <h2 className="text-2xl font-bold text-white mb-6">
                 Kanal Listesi
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-4">
                 {/* All Channels Card */}
                 <div
                   onClick={() => handleChannelClick("all")}
-                  className={`rounded-lg p-6 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer ${
+                  className={`rounded-lg p-3 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer ${
                     selectedChannelId === "all"
                       ? "bg-orange-800 ring-2 ring-orange-400"
                       : "bg-gray-800"
                   }`}
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-gray-600">
-                      <span className="text-white text-xl">📺</span>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center mb-2 bg-gray-600">
+                      <span className="text-white text-sm">📺</span>
                     </div>
-                    <h3 className="font-bold text-white mb-2">
+                    <h3 className="font-bold text-white mb-1 text-xs">
                       Tüm Takip Edilen Kanallar
                     </h3>
-                    <div className="flex items-center space-x-2 text-gray-400 text-sm">
+                    <div className="flex items-center space-x-2 text-gray-400 text-xs">
                       <span>▷ {totalVideos} video</span>
                       <span>•</span>
                       <span
@@ -481,7 +506,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                   return (
                     <div
                       key={index}
-                      className={`group relative rounded-lg p-6 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 ${
+                      className={`group relative rounded-lg p-3 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 ${
                         selectedChannelId === channel.name
                           ? "bg-orange-800 ring-2 ring-orange-400"
                           : "bg-gray-800"
@@ -491,7 +516,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                       {session?.user?.id && (
                         <button
                           onClick={() => handleToggle(channel.name)}
-                          className={`absolute top-2 right-2 rounded-full p-1 hover:scale-110 transition opacity-0 group-hover:opacity-100 ${
+                          className={`absolute top-1 right-1 rounded-full p-1 hover:scale-110 transition opacity-0 group-hover:opacity-100 ${
                             followedChannels.includes(channel.name)
                               ? "text-red-500"
                               : "text-gray-500"
@@ -505,7 +530,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                       )}
                       <div className="flex flex-col items-center text-center">
                         <div
-                          className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${
+                          className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                             channel.avatarColor === "blue"
                               ? "bg-blue-500"
                               : channel.avatarColor === "green"
@@ -515,12 +540,12 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                               : "bg-orange-500"
                           }`}
                         >
-                          <span className="text-white text-xl">👤</span>
+                          <span className="text-white text-sm">👤</span>
                         </div>
-                        <h3 className="font-bold text-white mb-2">
+                        <h3 className="font-bold text-white mb-1 text-xs">
                           {channel.name}
                         </h3>
-                        <div className="flex items-center space-x-2 text-gray-400 text-sm mb-3">
+                        <div className="flex items-center space-x-2 text-gray-400 text-xs mb-1">
                           <span>▷ {channel.videoCount} video</span>
                           <span>•</span>
                           <span
@@ -590,7 +615,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                           onClick={() => handleChannelClick(channel.name)}
                           className="w-full mt-2 cursor-pointer"
                         >
-                          <div className="text-sm text-gray-500 hover:text-gray-400 transition-colors">
+                          <div className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
                             Videoları İçin Tıkla
                           </div>
                         </div>
@@ -1125,6 +1150,11 @@ function VarliklarTab() {
             Haftalık Finans Raporu
           </h1>
           <p className="text-xl text-gray-400 mt-2">{reportData.weekOf}</p>
+          <p className="text-xs text-gray-300 max-w-3xl mx-auto">
+            Bu platformda bulunan bilgiler yatırım danışmanlığı kapsamında
+            olmadığı gibi yatırım tavsiyesi değildir. Yapılan özetler bireysel
+            görüşlerimdir. Videoların tamamını izlemeniz önerilir.
+          </p>
         </header>
 
         {/* Big Picture Section */}
