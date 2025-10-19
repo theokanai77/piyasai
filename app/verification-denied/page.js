@@ -17,8 +17,9 @@ export default function VerificationDeniedPage() {
         {/* Body Text */}
         <div className="mb-8">
           <p className="text-gray-300 text-lg leading-relaxed">
-            Lütfen X'te fitkayme hesabını takip edin ve DM ile email adresinizi
-            paylaşın. Hata varsa, lütfen fitkayme ile iletişime geçin.{" "}
+            Lütfen X&apos;te fitkayme hesabını takip edin ve DM ile email
+            adresinizi paylaşın. Hata varsa, lütfen fitkayme ile iletişime
+            geçin.{" "}
           </p>
         </div>
 

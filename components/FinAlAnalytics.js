@@ -182,7 +182,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
     if (session?.user?.xVerified === false) {
       router.push("/verification-denied");
     }
-  }, [session]);
+  }, [session, router]);
 
   // Fetch followed channels when user is authenticated
   useEffect(() => {

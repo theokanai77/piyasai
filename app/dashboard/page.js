@@ -147,18 +147,6 @@ async function fetchBulletins() {
   try {
     // Get user session for filtering
     const session = await getServerSession(authOptions);
-    let followedChannels = [];
-
-    if (session?.user?.id) {
-      try {
-        await connectMongo();
-        const user = await User.findById(session.user.id);
-        followedChannels = user ? user.followedChannels : [];
-      } catch (dbError) {
-        console.error("Error fetching user followed channels:", dbError);
-        // Continue with empty array if DB error
-      }
-    }
 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
