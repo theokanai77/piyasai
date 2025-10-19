@@ -61,7 +61,7 @@ export default function SignIn() {
             <span className="text-white font-bold text-xl">⚡</span>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Piyasai.com'a Giriş Yapın
+            Piyasai.com&apos;a Giriş Yapın
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Finansal analiz platformuna erişim için giriş yapın
