@@ -206,11 +206,14 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
   const totalVideos = filteredVideos.length;
 
   // Stats Cards - Always show total numbers from all bulletins (no filtering)
-  const statsTotalVideos = videos.length;
-  const statsTotalChannels = channels.length;
-  const statsTotalTimestamps = videos.reduce((total, video) => {
-    return total + (video.timestamps ? video.timestamps.length : 0);
-  }, 0);
+  // Use useMemo to ensure these values are stable and don't change based on user interactions
+  const statsTotalVideos = useMemo(() => videos.length, [videos]);
+  const statsTotalChannels = useMemo(() => channels.length, [channels]);
+  const statsTotalTimestamps = useMemo(() => {
+    return videos.reduce((total, video) => {
+      return total + (video.timestamps ? video.timestamps.length : 0);
+    }, 0);
+  }, [videos]);
 
   const handleTimestampClick = (videoUrl, timestamp) => {
     // Extract time in seconds from timestamp (e.g., "00:01" -> 1 second)

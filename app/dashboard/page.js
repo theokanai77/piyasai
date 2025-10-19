@@ -189,13 +189,8 @@ async function fetchBulletins() {
       timestamps: bulletin.timestamps || [],
     }));
 
-    // Filter by followed channels if user has followed channels
-    if (followedChannels.length > 0) {
-      return transformedData.filter((bulletin) =>
-        followedChannels.includes(bulletin.channel)
-      );
-    }
-
+    // Always return all data - let FinAlAnalytics component handle filtering
+    // This ensures stats cards always show total numbers
     return transformedData || [];
   } catch (error) {
     console.error("Error fetching bulletins:", error);
