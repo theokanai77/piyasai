@@ -23,7 +23,7 @@ const config = {
             ? "price_1Niyy5AxyNprDp7iZIqEyD2h"
             : "price_456",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Ücretsiz 1 Aylık Abonelik",
+        name: "Ücretsiz Deneme 1 Hafta",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
         description:
           "Her an tüm dünya gündemine ve yerli/yabancı ekonomi haberlerine hızlıca ulaşın!",
@@ -35,8 +35,7 @@ const config = {
           {
             name: "Piyasai Kısıtlı Erişim",
           },
-          { name: "Kanalları Takip Et" },
-          { name: "Haftalık Finans Raporunu Okuyun" },
+          { name: "Haftalık Finans Raporu Kısıtlı Erişim" },
           { name: "Özetleri Takip Et" },
         ],
       },
@@ -47,16 +46,16 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_1O5KtcAxyNprDp7iftKnrrpw"
             : "price_456",
-        name: "Ücretsiz 6 Aylık Abonelik",
+        name: "Ücretsiz Piyasai Tam Erişim",
         description:
-          "X @fitkayme hesabını takip ederek, DM 'den emailini yolla. 6 ay boyunca ücretsiz erişim.",
+          "X @fitkayme hesabını takip ederek, DM 'den emailini yolla. Ücretsiz erişim.",
         price: 0,
         priceAnchor: 289,
         features: [
           {
             name: "Piyasai Tam Erişim",
           },
-          { name: "6 Aylık Ücretsiz Erişim" },
+          { name: "Ücretsiz Erişim" },
           { name: "Haftalık Finans Raporunu Okuyun" },
           { name: "Özetleri Takip Et" },
           { name: "Kanalları Takip Et" },

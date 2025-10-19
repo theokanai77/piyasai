@@ -1,6 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import { Resend } from "resend";
 import config from "@/config";
 import connectMongo from "./mongo";
 import connectMongoose from "./mongoose";
@@ -9,11 +10,31 @@ import User from "@/models/User";
 export const authOptions = {
   // Set any random key in .env.local
   secret: process.env.NEXTAUTH_SECRET,
+  // Turkish language configuration
+  pages: {
+    signIn: "/api/auth/signin",
+    signOut: "/api/auth/signout",
+    error: "/api/auth/error",
+    verifyRequest: "/api/auth/verify-request",
+    newUser: "/dashboard",
+  },
+  // Turkish language settings
+  debug: process.env.NODE_ENV === "development",
   providers: [
     GoogleProvider({
       // Follow the "Login with Google" tutorial to get your credentials
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+          // Sets the language of the consent screen.
+          // Use 'tr' for Turkish, 'en' for English, etc.
+          hl: "tr",
+        },
+      },
       async profile(profile) {
         return {
           id: profile.sub,
@@ -36,8 +57,55 @@ export const authOptions = {
                 user: "resend",
                 pass: process.env.RESEND_API_KEY,
               },
+              headers: {
+                "x-request-language": "tr",
+              },
             },
             from: process.env.EMAIL_FROM || "noreply@resend.piyasai.com",
+            sendVerificationRequest: async ({ identifier, url }) => {
+              const resend = new Resend(process.env.RESEND_API_KEY);
+              await resend.emails.send({
+                from: process.env.EMAIL_FROM || "noreply@resend.piyasai.com",
+                to: identifier,
+                subject: "Piyasai.com Giriş Yapın",
+                text: `Merhaba, giriş yapmak için aşağıdaki bağlantıya tıklayın: ${url}`,
+                html: `
+                  <!DOCTYPE html>
+                  <html lang="tr">
+                  <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Piyasai.com Giriş</title>
+                  </head>
+                  <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f3f4f6;">
+                    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px 20px;">
+                      <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="color: #1f2937; font-size: 28px; font-weight: bold; margin: 0 0 20px 0;">
+                          Piyasai.com Hoş Geldiniz
+                        </h1>
+                        <p style="color: #6b7280; font-size: 16px; line-height: 1.5; margin: 0;">
+                          Merhaba, giriş yapmak için aşağıdaki butona tıklayın.
+                        </p>
+                      </div>
+                      <div style="text-align: center; margin: 40px 0;">
+                        <a href="${url}" style="display: inline-block; background-color: #f97316; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: background-color 0.2s;">
+                          Giriş Yap
+                        </a>
+                      </div>
+                      <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                        <p style="color: #9ca3af; font-size: 14px; margin: 0;">
+                          Bu e-posta otomatik olarak gönderilmiştir. Lütfen yanıtlamayın.
+                        </p>
+                      </div>
+                    </div>
+                  </body>
+                  </html>
+                `,
+                headers: {
+                  "Accept-Language": "tr-TR",
+                },
+              });
+            },
           }),
         ]
       : []),
@@ -114,5 +182,8 @@ export const authOptions = {
     // Add you own logo below. Recommended size is rectangle (i.e. 200x50px) and show your logo + name.
     // It will be used in the login flow to display your logo. If you don't add it, it will look faded.
     logo: `https://${config.domainName}/logoAndName.png`,
+    // Turkish language theme settings
+    colorScheme: "dark",
+    buttonText: "Giriş Yap",
   },
 };
