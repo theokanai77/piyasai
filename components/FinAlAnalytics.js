@@ -467,24 +467,25 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
               <h2 className="text-2xl font-bold text-white mb-6">
                 Kanal Listesi
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-3 md:gap-4">
                 {/* All Channels Card */}
                 <div
                   onClick={() => handleChannelClick("all")}
-                  className={`rounded-lg p-3 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer ${
+                  className={`rounded-lg p-2 md:p-3 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-pointer ${
                     selectedChannelId === "all"
                       ? "bg-orange-800 ring-2 ring-orange-400"
                       : "bg-gray-800"
                   }`}
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center mb-2 bg-gray-600">
+                    {/* Avatar - Hidden on mobile */}
+                    <div className="w-10 h-10 rounded-full items-center justify-center mb-2 bg-gray-600 hidden md:flex">
                       <span className="text-white text-sm">📺</span>
                     </div>
-                    <h3 className="font-bold text-white mb-1 text-xs">
+                    <h3 className="font-bold text-white mb-1 text-xs md:text-xs leading-tight">
                       Tüm Takip Edilen Kanallar
                     </h3>
-                    <div className="flex items-center space-x-2 text-gray-400 text-xs">
+                    <div className="flex items-center space-x-1 md:space-x-2 text-gray-400 text-xs">
                       <span>▷ {totalVideos} video</span>
                       <span>•</span>
                       <span
@@ -506,7 +507,7 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                   return (
                     <div
                       key={index}
-                      className={`group relative rounded-lg p-3 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 ${
+                      className={`group relative rounded-lg p-2 md:p-3 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200 ${
                         selectedChannelId === channel.name
                           ? "bg-orange-800 ring-2 ring-orange-400"
                           : "bg-gray-800"
@@ -529,8 +530,9 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                         </button>
                       )}
                       <div className="flex flex-col items-center text-center">
+                        {/* Avatar - Hidden on mobile */}
                         <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
+                          className={`w-10 h-10 rounded-full items-center justify-center mb-2 hidden md:flex ${
                             channel.avatarColor === "blue"
                               ? "bg-blue-500"
                               : channel.avatarColor === "green"
@@ -542,10 +544,10 @@ export default function FinAlAnalytics({ channels = [], videos = [] }) {
                         >
                           <span className="text-white text-sm">👤</span>
                         </div>
-                        <h3 className="font-bold text-white mb-1 text-xs">
+                        <h3 className="font-bold text-white mb-1 text-xs md:text-xs leading-tight">
                           {channel.name}
                         </h3>
-                        <div className="flex items-center space-x-2 text-gray-400 text-xs mb-1">
+                        <div className="flex items-center space-x-1 md:space-x-2 text-gray-400 text-xs mb-1">
                           <span>▷ {channel.videoCount} video</span>
                           <span>•</span>
                           <span
