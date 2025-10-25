@@ -825,72 +825,72 @@ function VarliklarTab() {
 
   // Hardcoded report data from tematik.html
   const reportData = {
-    weekOf: "19 Ekim 2025 Haftası",
+    weekOf: "24 Ekim 2025 Haftası",
     bigPictureSummary: {
       summary:
-        "Bu hafta uzmanlar, piyasaların Trump'ın Çin'e yönelik vergi tehditleriyle başlayıp 'her şey yolunda' mesajıyla toparlandığı sert manipülasyonlara sahne olduğunu vurguluyor. Bu süreçte özellikle kripto piyasasında büyük bir çöküş yaşanırken, analistler bunu 'boğa tuzağı' olarak nitelendiriyor. Altın ve gümüş, bu organize kaos ortamında güvenli liman olarak öne çıkmaya devam ediyor ve uzun vadeli yükseliş beklentileri korunuyor. ABD'nin bilinçli dolar devalüasyonu tezi ve Çin'in ABD bankalarına yönelik hamleleri, küresel bir finansal kriz riskini gündemde tutuyor. Ana strateji, 'mevcut pozisyonu korumak' ve 'trene son binen olmamak' yönünde.",
+        "Bu hafta piyasalar, TCMB'nin 100 baz puanlık faiz indirimi ve küresel jeopolitik risklerin (3. Dünya Savaşı söylemleri) gölgesinde kaldı. Altın ve gümüşte sert düzeltmeler yaşansa da ('kar realizasyonu'), uzmanların çoğu bunun bir trend bitişi olmadığını, aksine fiziki kıtlık ve itibari para sistemine güvensizlik nedeniyle uzun vadeli boğa trendinin devam ettiğini vurguluyor. Kripto piyasası 'kumar masası' olarak görülürken, Borsa İstanbul siyasi belirsizliklerin kalkmasıyla tepki alımı gördü. ABD'de bölgesel banka krizleri ve Çin'in hamleleri küresel risk iştahını baskılamaya devam ediyor.",
       keyThemes: [
-        "Piyasalarda Trump Manipülasyonu",
-        "Kripto Piyasasında 'Boğa Tuzağı'",
-        "Altın ve Gümüşte Uzun Vadeli Güven",
-        "Küresel Finansal Kriz Riski",
-        "Mevcut Pozisyonu Koruma Stratejisi",
+        "TCMB Faiz İndirimi",
+        "Jeopolitik Riskler ve Savaş Söylemi",
+        "Altın/Gümüşte Düzeltme ve Fiziki Kıtlık",
+        "BIST'te Siyasi Belirsizliğin Kalkması",
+        "Küresel Finansal Kriz Uyarıları",
       ],
     },
     sentimentAnalysis: [
       {
         asset: "Gram Altın",
-        selcukGecer: "Pozitif",
-        islamMemis: "Nötr",
         artuncKocabalkan: "Pozitif",
-        cihatCicek: "Pozitif",
         elitFinans: "Pozitif",
+        atillaYesilada: "Pozitif",
+        cihatCicek: "Pozitif",
+        islamMemis: "Pozitif",
+        selcukGecer: "Pozitif",
         selcoin: "Pozitif",
-        barisSoydan: "Veri Yok",
-        bloombergHT: "Nötr",
+        bloombergHT: "Veri Yok",
       },
       {
         asset: "Gümüş",
-        selcukGecer: "Pozitif",
-        islamMemis: "Nötr",
-        artuncKocabalkan: "Nötr",
+        artuncKocabalkan: "Veri Yok",
+        elitFinans: "Nötr",
+        atillaYesilada: "Veri Yok",
         cihatCicek: "Pozitif",
-        elitFinans: "Negatif",
+        islamMemis: "Pozitif",
+        selcukGecer: "Veri Yok",
         selcoin: "Pozitif",
-        barisSoydan: "Veri Yok",
         bloombergHT: "Veri Yok",
       },
       {
         asset: "Dolar/TL",
-        selcukGecer: "Veri Yok",
-        islamMemis: "Veri Yok",
         artuncKocabalkan: "Veri Yok",
-        cihatCicek: "Veri Yok",
         elitFinans: "Veri Yok",
-        selcoin: "Veri Yok",
-        barisSoydan: "Veri Yok",
-        bloombergHT: "Pozitif",
-      },
-      {
-        asset: "BIST 100",
+        atillaYesilada: "Nötr",
+        cihatCicek: "Veri Yok",
+        islamMemis: "Nötr",
         selcukGecer: "Veri Yok",
-        islamMemis: "Negatif",
-        artuncKocabalkan: "Negatif",
-        cihatCicek: "Negatif",
-        elitFinans: "Negatif",
-        selcoin: "Negatif",
-        barisSoydan: "Veri Yok",
+        selcoin: "Veri Yok",
         bloombergHT: "Veri Yok",
       },
       {
-        asset: "Kripto",
-        selcukGecer: "Pozitif",
-        islamMemis: "Pozitif",
-        artuncKocabalkan: "Negatif",
+        asset: "BIST 100",
+        artuncKocabalkan: "Nötr",
+        elitFinans: "Veri Yok",
+        atillaYesilada: "Pozitif",
         cihatCicek: "Veri Yok",
-        elitFinans: "Negatif",
+        islamMemis: "Pozitif",
+        selcukGecer: "Veri Yok",
         selcoin: "Negatif",
-        barisSoydan: "Pozitif",
+        bloombergHT: "Pozitif",
+      },
+      {
+        asset: "Kripto",
+        artuncKocabalkan: "Negatif",
+        elitFinans: "Negatif",
+        atillaYesilada: "Veri Yok",
+        cihatCicek: "Veri Yok",
+        islamMemis: "Pozitif",
+        selcukGecer: "Pozitif",
+        selcoin: "Pozitif",
         bloombergHT: "Veri Yok",
       },
     ],
@@ -899,37 +899,44 @@ function VarliklarTab() {
         theme: "Makro ve Küresel Ekonomi",
         summaries: [
           {
-            analyst: "Selcoin",
-            quote:
-              "Trump piyasayı tehdit-ödül sarkacıyla oynatıyor. Bu bir pazarlık masası değil, manipülasyon sahnesi!",
-            videoId: "4P5AakBK-L4",
-            timestamp: "00:00",
-          },
-          {
             analyst: "Artunç Kocabalkan",
             quote: "Trend senin dostun olabilir, ama ona son binen olma.",
             videoId: "MJC1qn00hr0",
-            timestamp: "00:00",
-          },
+            timestamp: "26:35",
+          }, // Updated
           {
-            analyst: "İslam Memiş",
+            analyst: "Cihat E. Çiçek",
             quote:
-              "Teknik olarak görülemeyen, mantık olarak yorumlanamayan bir süreçteyiz. Bu bir manipülasyon piyasası.",
-            videoId: "X7N3fs5CIQo",
-            timestamp: "00:00",
+              "Lehman gününden daha kötü durumdayız şu anda. (Trichet alıntısı)",
+            videoId: "QcDxx1KwRI0",
+            timestamp: "02:37",
           },
           {
-            analyst: "BloombergHT",
-            quote: "ABD bilinçli bir şekilde doların değerini düşürüyor.",
-            videoId: "ZKtBl6y0Z1w",
-            timestamp: "10:38",
-          },
-          {
-            analyst: "Artunç Kocabalkan",
+            analyst: "Selçuk Geçer",
             quote:
-              "Çin'in ABD bankalarını ve ekonomisine yönelik stratejik hamleleri, küresel finans sisteminde bulaşıcı bir kriz riskini artırıyor.",
-            videoId: "MJC1qn00hr0",
-            timestamp: "04:09",
+              "3. Dünya Savaşı riski bile altını 6.000 doların üzerine taşımaya yeter.",
+            videoId: "s-vpKZNfX9c",
+            timestamp: "05:58",
+          }, // Updated
+          {
+            analyst: "Atilla Yeşilada",
+            quote:
+              "Altınla hisse aynı anda yükseliyorsa korkarım; bu piyasa değil, balondur.",
+            videoId: "-38luLFN3tl",
+            timestamp: "10:15",
+          },
+          {
+            analyst: "Elit Finans",
+            quote:
+              "3. Dünya Savaşı başladı; bu biyolojik ve ekonomik bir savaş.",
+            videoId: "Azz25i3Xqio",
+            timestamp: "1:24:24",
+          },
+          {
+            analyst: "Atilla Yeşilada",
+            quote: "Güçlü TL'den taviz yok.",
+            videoId: "eSWkSXWme80",
+            timestamp: "10:03",
           },
         ],
       },
@@ -937,66 +944,102 @@ function VarliklarTab() {
         theme: "Değerli Metaller",
         summaries: [
           {
-            analyst: "Artunç Kocabalkan",
-            quote:
-              "Altından şaşmayın, altınsız kalmayın. Borsadan mal olmayın, tangible asset alın.",
-            videoId: "Sr9H8sy4kdc",
-            timestamp: "00:00",
+            analyst: "Elit Finans",
+            quote: "4060'ın üstünde başka bir dünya var.",
+            videoId: "Azz25i3Xqio",
+            timestamp: "08:02",
           },
           {
             analyst: "Selçuk Geçer",
-            quote: "Altın 6.000$'da durmaz; 10.000$ bile konuşulacak.",
-            videoId: "U2tsWmVYY5E",
-            timestamp: "00:00",
+            quote:
+              "Altın 6.000$ hedefi - 'Savaş tamtamları çaldıkça altın uçar.'",
+            videoId: "s-vpKZNfX9c",
+            timestamp: "06:46",
           },
           {
             analyst: "Cihat E. Çiçek",
-            quote: "Altın 4.444 olmadan 5.000 olmaz; %6 şıp işi.",
-            videoId: "AIE-pK7slpg",
-            timestamp: "00:00",
-          },
+            quote:
+              "Enflasyon, devletlerin borçlarını eritmek için kullandığı gündüz gözüyle soygundur; altın bunu fiyatlıyor.",
+            videoId: "H74cg09-e_U",
+            timestamp: "06:32",
+          }, // Updated
           {
-            analyst: "Elit Finans",
-            quote: "Altın pahalı değil; para ucuzladı.",
-            videoId: "OIWTGcUJRm0",
-            timestamp: "00:00",
+            analyst: "Artunç Kocabalkan",
+            quote: "Altın değerlendirmesi: 4.200 görüldü, hedef 4.500.",
+            videoId: "MJC1qn00hr0",
+            timestamp: "02:12",
           },
           {
             analyst: "İslam Memiş",
             quote:
-              "Altın-gümüş elinde olan satmasın; nakit ihtiyacı yoksa beklemede kalın.",
-            videoId: "X7N3fs5CIQo",
-            timestamp: "11:06",
+              "Ons altın 4.146$ - manipülasyon sürüyor. 3.800-4.200$ bandı korunuyor.",
+            videoId: "DPPG06KtFs4",
+            timestamp: "03:04",
           },
           {
-            analyst: "Selçuk Geçer",
+            analyst: "Selcoin",
             quote:
-              "2026'da gümüş 100$, altın 6.000$ öngörüsü: Bankaların tahminleri 'temkinli'.",
-            videoId: "U2tsWmVYY5E",
-            timestamp: "01:42",
+              "Bu düşüş trend bitişi değil; kar realizasyonu. Altın 5300'lerde fırsat sunuyor.",
+            videoId: "whsIQTy2Fg0",
+            timestamp: "06:06",
+          }, // Updated
+          {
+            analyst: "Elit Finans",
+            quote:
+              "Makas 600 TL; düşüşte bile fiziki altın vermiyorlar. Tepede satan, dipte yerine koyamıyor.",
+            videoId: "QNeGB4Tgz60",
+            timestamp: "08:46",
+          }, // Updated
+          {
+            analyst: "Cihat E. Çiçek",
+            quote:
+              "Hindistan iddiası: 2026 Nisan'dan itibaren gümüşü rezerv/karşılık kabul + '1 altın = 10 gümüş' sabiti söylentisi.",
+            videoId: "zqlcU55ylkU",
+            timestamp: "21:35",
           },
           {
             analyst: "Cihat E. Çiçek",
-            quote: "Kağıt cinsi şu ortamda hiçbir şeyin yakınından geçirmem.",
-            videoId: "AIE-pK7slpg",
-            timestamp: "00:00",
+            quote:
+              "Hindistan'ın 1 günde 1000 ton gümüş, 50 ton altın aldığı iddiası; festival etkisi.",
+            videoId: "QcDxx1KwRI0",
+            timestamp: "06:18",
           },
           {
-            analyst: "Elit Finans",
-            quote: "2026'ya kalmadan altına vergi/engel gelebilir talep aşırı.",
-            videoId: "OIWTGcUJRm0",
-            timestamp: "14:35",
+            analyst: "İslam Memiş",
+            quote:
+              "Gümüşte %50 kademeli alım stratejisi öneriliyor (49-47-42$).",
+            videoId: "DPPG06KtFs4",
+            timestamp: "07:40",
           },
+          {
+            analyst: "Selcoin",
+            quote: "Top yekûn herkes altın alıyor; en çok da devlet.",
+            videoId: "VJpoL_Ny3MY",
+            timestamp: "04:04",
+          }, // Updated
         ],
       },
       {
         theme: "Dolar/TL",
         summaries: [
           {
-            analyst: "BloombergHT",
-            quote: "Doların kasıtlı devalüasyonu tezi.",
-            videoId: "ZKtBl6y0Z1w",
-            timestamp: "10:38",
+            analyst: "Atilla Yeşilada",
+            quote:
+              "Dolarizasyon değil bu, katılaşma. Çünkü Merkez Bankası'na değil, sisteme güven eksik.",
+            videoId: "-38luLFN3tl",
+            timestamp: "06:43",
+          },
+          {
+            analyst: "İslam Memiş",
+            quote: "Dolar 41,98 ay sonunda 42 TL görülür.",
+            videoId: "DPPG06KtFs4",
+            timestamp: "01:52",
+          },
+          {
+            analyst: "Atilla Yeşilada",
+            quote: "Hiçbir kuvvet Merkez Bankası'nın dövizde bileğini bükemez.",
+            videoId: "eSWkSXWme80",
+            timestamp: "16:22",
           },
         ],
       },
@@ -1004,36 +1047,29 @@ function VarliklarTab() {
         theme: "BIST100",
         summaries: [
           {
-            analyst: "Artunç Kocabalkan",
-            quote: "Borsadan bir şey olmaz, swap yapılmadıkça gitmez.",
-            videoId: "Sr9H8sy4kdc",
-            timestamp: "17:05",
-          },
-          {
-            analyst: "Cihat E. Çiçek",
-            quote: "BIST eleştirisi ve makro belirsizlik.",
-            videoId: "AIE-pK7slpg",
-            timestamp: "10:33",
-          },
-          {
-            analyst: "Elit Finans",
+            analyst: "Bloomberg HT",
             quote:
-              "BIST (USD bazlı): düşen trend; direnç 252, altında 244; risk alanı 232/231.",
-            videoId: "OIWTGcUJRm0",
-            timestamp: "97:10",
+              "2026'da banka ve holding hisseleri olumluyu satın alır; faiz düşüşü ve bilançolar bunu destekleyecek.",
+            videoId: "bU8gdFD4g-A",
+            timestamp: "12:16",
           },
           {
             analyst: "İslam Memiş",
-            quote:
-              "Borsa 10.465 seviyesinde; yatırımcı moralsiz, tepki alımı zayıf.",
-            videoId: "X7N3fs5CIQo",
-            timestamp: "06:25",
+            quote: "Borsa 10.800 puan kırılmadan güçlü değil.",
+            videoId: "DPPG06KtFs4",
+            timestamp: "01:21",
+          },
+          {
+            analyst: "Artunç Kocabalkan",
+            quote: "Borsada kısa vadeli fırsatlar, ama uzun vadede dikkat.",
+            videoId: "MJC1qn00hr0",
+            timestamp: "25:14",
           },
           {
             analyst: "Selcoin",
-            quote: "Borsa İstanbul bulut altına indi, görünüm zayıf.",
-            videoId: "4P5AakBK-L4",
-            timestamp: "08:20",
+            quote: "Borsa İstanbul TL bazında dirençte, dolar bazında zayıf.",
+            videoId: "whsIQTy2Fg0",
+            timestamp: "10:32",
           },
         ],
       },
@@ -1041,59 +1077,48 @@ function VarliklarTab() {
         theme: "Kripto",
         summaries: [
           {
-            analyst: "Selcoin",
-            quote:
-              "'Boğa tuzağı' kuruldu; altcoinler manipülasyonla aşağı çekildi.",
-            videoId: "4P5AakBK-L4",
-            timestamp: "14:06",
-          },
+            analyst: "Selçuk Geçer",
+            quote: "Fed faiz indirir, teknoloji ve kripto uçar.",
+            videoId: "fUL6bo6U0Es",
+            timestamp: "15:16",
+          }, // Updated
           {
-            analyst: "Barış Soydan",
+            analyst: "Elit Finans",
             quote:
-              "Kripto tarafında ciddi temizlik yaşandı; büyük oyuncuların piyasayı yukarı çekmek için sebebi oluştu.",
-            videoId: "Yr6eHrxPZ7w",
-            timestamp: "05:06",
-          },
-          {
-            analyst: "Artunç Kocabalkan",
-            quote:
-              "Bitcoin 113.000 seviyesinde tutunmakta zorlanıyor; 'durursa düşer' uyarısı yapıyor.",
-            videoId: "Sr9H8sy4kdc",
-            timestamp: "11:04",
+              "Altcoin boğası bahanesiyle küçük yatırımcıyı içeri aldılar, sonra batırdılar.",
+            videoId: "Azz25i3Xqio",
+            timestamp: "1:03:18",
           },
           {
             analyst: "İslam Memiş",
-            quote:
-              "Bitcoin 111.857 dolar; 107.000-110.000 seviyeleri ucuz kabul ediliyor.",
-            videoId: "X7N3fs5CIQo",
-            timestamp: "12:41",
+            quote: "Bitcoin, dolar ve altına göre daha cazip.",
+            videoId: "DPPG06KtFs4",
+            timestamp: "10:05",
+          },
+          {
+            analyst: "Artunç Kocabalkan",
+            quote: "Bitcoin 107.000$; kritik destek 102.500$, hedef 114.000$.",
+            videoId: "MJC1qn00hr0",
+            timestamp: "10:37",
+          },
+          {
+            analyst: "Selcoin",
+            quote: "Bitcoin 113.500$'da tutunamazsa düzeltme sürecek.",
+            videoId: "whsIQTy2Fg0",
+            timestamp: "11:17",
           },
           {
             analyst: "Selçuk Geçer",
             quote:
-              "Kriptolarda temizlik: çoğu yok olacak, kalanlar değer kazanacak.",
-            videoId: "U2tsWmVYY5E",
-            timestamp: "09:22",
-          },
-          {
-            analyst: "Elit Finans",
-            quote:
-              "Kriptoda/teknikte 'fitil' ile vadeli teminatlar eritilebilir.",
-            videoId: "OIWTGcUJRm0",
-            timestamp: "56:07",
+              "ABD'nin dev bankaları yeni blok zinciri ve stabil coin ödeme sistemi üzerinde çalışıyor.",
+            videoId: "fUL6bo6U0Es",
+            timestamp: "13:58",
           },
         ],
       },
       {
         theme: "Yabancı Borsalar",
         summaries: [
-          {
-            analyst: "Barış Soydan",
-            quote:
-              "Böyle düzeltmeler iyidir, sağlıklıdır. Yeter ki kaldıraçlı oynamayın arkadaşlar.",
-            videoId: "Yr6eHrxPZ7w",
-            timestamp: "00:00",
-          },
           {
             analyst: "Artunç Kocabalkan",
             quote:
@@ -1102,11 +1127,24 @@ function VarliklarTab() {
             timestamp: "07:44",
           },
           {
-            analyst: "BloombergHT",
+            analyst: "Elit Finans",
+            quote: "Altında balon yok; balon Nasdaq ve S&P'de.",
+            videoId: "Azz25i3Xqio",
+            timestamp: "1:17:50",
+          },
+          {
+            analyst: "Selçuk Geçer",
             quote:
-              "Asya'da Al rallisinin kârlılıkça desteklenmediğine dair uyarılar var.",
-            videoId: "ZKtBl6y0Z1w",
-            timestamp: "35:15",
+              "Yapay zeka hisseleri (Nvidia, Microsoft, Google) yeni dalga.",
+            videoId: "fUL6bo6U0Es",
+            timestamp: "09:27",
+          },
+          {
+            analyst: "Bloomberg HT",
+            quote:
+              "Avrupa'da PMI sürprizi, gayrimenkul zayıf, çip hisseleri güçlü.",
+            videoId: "bU8gdFD4g-A",
+            timestamp: "24:35",
           },
         ],
       },
